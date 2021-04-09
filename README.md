@@ -10,7 +10,8 @@ React.js와 next.js와 같은 Front-end 공부를 위한 토이프로젝트
 - Redux
 - Redux-saga
 - Ant-Design
-- Styled-Components
+- emotion
+- jest
 
 ## back-end 스펙
 
