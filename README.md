@@ -12,6 +12,7 @@ React.js와 next.js와 같은 Front-end 공부를 위한 토이프로젝트
 - Ant-Design
 - emotion
 - jest
+- storybook
 
 ## back-end 스펙
 
