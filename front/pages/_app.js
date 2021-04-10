@@ -1,6 +1,6 @@
-import AppLayout from '../src/AppLayout'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
+import 'antd/dist/antd.css'
 
 const App = ({ Component }) => {
   return(
@@ -9,7 +9,6 @@ const App = ({ Component }) => {
         <meta charSet="utf-8" />
         <title>React Twitter</title>
       </Head>
-      <div>공통사항</div>
       <Component />
       
     </>
