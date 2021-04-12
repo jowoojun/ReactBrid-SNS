@@ -1,9 +1,13 @@
-import AppLayout from '../src/AppLayout'
 import Head from 'next/head'
+import { useSelector } from 'react-redux';
+
+import AppLayout from '../src/AppLayout'
 import FollowList from '../src/FollowList'
 import NicknameEditForm from '../src/NicknameEditForm'
 
 const Profile = () => {
+  const { isLoggedIn } = useSelector(state => state.user);
+
   const followerList = [{nickname: "바보"}, {nickname: "바보"}, {nickname: "바보"}, {nickname: "바보"}]
   const followingList = [{nickname: "바보"}, {nickname: "바보"}, {nickname: "바보"}, {nickname: "바보"}]
   return(

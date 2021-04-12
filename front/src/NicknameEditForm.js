@@ -10,7 +10,7 @@ const NicknameEditForm = () => {
 
   return(
     <Form style={{style}}>
-      <Input.Search addonBefore="닉네임" enterButtton="수정" />
+      <Input.Search addonBefore="닉네임" />
     </Form>
   )
 }

@@ -3,7 +3,11 @@ import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import { Input, Form, Button } from 'antd'
 import styled from '@emotion/styled'
+import {useDispatch} from 'react-redux'
 
+import useInput from '../hooks/useInput'
+
+import { loginAction } from '../reducers/user';
 
 const ButtonWapper = styled.div`
   margin-top: 10px
@@ -13,32 +17,27 @@ const FormWapper = styled(Form)`
   padding: 10px
 `
 
-const LoginFrom = ({ setIsLoggedIn }) => {
-  const [id, setId] = useState('')
-  const [password, setPassword] = useState('')
-  
-  const onChangeId = useCallback((e) => {
-    setId(e.target.value);
-  }, [])
+const LoginFrom = ({ }) => {
+  const [id, onChangeId] = useInput('');
+  const [password, onChangePassword] = useInput('');
+  const dispatch = useDispatch();
 
-  const onChangePassword = useCallback((e) => {
-    setPassword(e.target.value);
-  }, [])
- 
-  const onsubmitForm = useCallback((e) => {
-    console.log(id, password)
-    setIsLoggedIn(true)
-  }, [id, password])
+  const onSubmitForm = useCallback(() => {
+    dispatch(loginAction({
+      id,
+      password,
+    }));
+  }, [id, password]);
   
   return(
-    <FormWapper onFinish={onsubmitForm}>
+    <FormWapper onFinish={onSubmitForm}>
       <div>
         <label htmlFor="user-id">아이디</label>
         <br />
         <Input name="user-id" value={id} onChange={onChangeId} requried="true" />
       </div>
       <div>
-        <label htmlFor="user-id">비밀번호</label>
+        <label htmlFor="user-password">비밀번호</label>
         <br />
         <Input type="password" name="user-password" value={password} onChange={onChangePassword} requried="true" />
       </div>

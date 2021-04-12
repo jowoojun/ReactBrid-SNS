@@ -18,7 +18,10 @@
     "next-redux-wrapper": "^6.0.2",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.3",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.9"
   },
   "devDependencies": {
     "eslint-plugin-react": "^7.23.1",
