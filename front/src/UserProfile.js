@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logoutAction } from '../reducers/user';
 
 const UserProfile = ({setIsLoggedIn}) => {
-  const { user } = useSelector(state => state.user);
+  const { me } = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   const onLogout = useCallback(() => {
@@ -19,8 +19,8 @@ const UserProfile = ({setIsLoggedIn}) => {
       <div key="followers">팔로워<br />0</div>,
     ]}>
       <Card.Meta
-        avatar={<Avatar>JW</Avatar>}
-        title="woojun" />
+        avatar={<Avatar>{me.nickname[0]}</Avatar>}
+        title={me.nickname} />
       <Button onClick={onLogout}>로그아웃</Button>
     </Card>
   )

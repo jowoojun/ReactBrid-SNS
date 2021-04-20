@@ -2,10 +2,10 @@ export const initialState = {
   mainPosts: [{
     id: 1,
     User: {
-      id: 1,
-      nickname: '제로초',
+      id: 2,
+      nickname: '미라리',
     },
-    content: '첫 번째 게시글',
+    content: '이것은 더미데이터입니다.#해시테그 #익스프레스',
     Images: [{
       src: 'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726',
     }, {
@@ -15,14 +15,14 @@ export const initialState = {
     }],
     Comments: [{
       User: {
-        nickname: 'nero',
+        nickname: '하로',
       },
-      content: '우와 개정판이 나왔군요~',
+      content: '뭐? 개정판이 나왔다구?',
     }, {
       User: {
-        nickname: 'hero',
+        nickname: '세나',
       },
-      content: '얼른 사고싶어요~',
+      content: '이 게임 얼른 현질 하고싶어요~',
     }]
   }],
   imagePaths: [],
@@ -37,10 +37,10 @@ export const addPost = {
 
 const dummyPost = {
   id: 2,
-  content: '더미데이터입니다.',
+  content: '이것은 더미데이터입니다.',
   User: {
     id: 1,
-    nickname: '제로초',
+    nickname: '리라',
   },
   Images: [],
   Comments: [],
