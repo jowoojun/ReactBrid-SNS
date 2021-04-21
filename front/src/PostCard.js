@@ -3,7 +3,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
-import { Card, Button, Avatar, Popover } from 'antd';
+import { Card, Button, Avatar, Popover, List, Comment } from 'antd';
 
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
@@ -60,6 +60,20 @@ const PostCard = ({ post }) => {
       {commentFormOpened && (
         <>
           <CommentForm post={post} />
+          <List
+            header={`${post.Comments.length} 댓글`}
+            itemLayout="horizontal"
+            dataSource={post.Comments}
+            renderItem={(item) => (
+              <li>
+                <Comment 
+                  author={item.User.nickname}
+                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  content={item.Comment}
+                />
+              </li>
+            )}
+          />
         </>
       )}
     </div>
