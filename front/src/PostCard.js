@@ -25,7 +25,6 @@ const PostCard = ({ post }) => {
   return (
     <div style={{ marginBottom: '20px' }} key={post.id}>
       <Card
-        cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
           <RetweetOutlined key="retweet" />,
           liked
@@ -54,8 +53,14 @@ const PostCard = ({ post }) => {
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
           title={post.User.nickname}
-          description={post.content}
+          description={
+            <div>
+              {post.content}
+              {post.Images[0] && <PostImages images={post.Images} />}
+            </div>
+          }
         />
+        {}
       </Card>
       {commentFormOpened && (
         <>
