@@ -2,27 +2,27 @@ import React from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 
-const PostCardContent = ({ postData }) => (
+const PostCardContent = ({ content }) => (
   <div>
-    {postData.split(/(#[^\s]+)/g).map((v) => {
-      if (v.match(/#[^\s]+/)) {
+    {content.split(/(#[^\s]+)/g).map((t, i) => {
+      if (t.match(/#[^\s]+/)) {
         return (
           <Link
-            href={{ pathname: '/hashtag', query: { tag: v.slice(1) } }}
-            as={`/hashtag/${v.slice(1)}`}
-            key={v}
+            href={{ pathname: '/hashtag', query: { tag: t.slice(1) } }}
+            as={`/hashtag/${t.slice(1)}`}
+            key={i}
           >
-            <a>{v}</a>
+            <a>{t}</a>
           </Link>
         );
       }
-      return v;
+      return t;
     })}
   </div>
 );
 
 PostCardContent.propTypes = {
-  postData: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
 };
 
 export default PostCardContent;

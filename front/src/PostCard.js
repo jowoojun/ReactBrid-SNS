@@ -7,6 +7,7 @@ import { Card, Button, Avatar, Popover, List, Comment } from 'antd';
 
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
+import PostCardContent from './PostCardContent';
 
 const PostCard = ({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -55,7 +56,7 @@ const PostCard = ({ post }) => {
           title={post.User.nickname}
           description={
             <div>
-              {post.content}
+              <PostCardContent content={post.content} />
               {post.Images[0] && <PostImages images={post.Images} />}
             </div>
           }
