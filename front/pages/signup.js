@@ -6,6 +6,8 @@ import Head from 'next/head';
 import AppLayout from '../src/AppLayout';
 import useInput from '../hooks/useInput';
 
+import { signUpRequestAction } from '../reducers/user';
+
 const Signup = () => {
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState(false);
@@ -16,7 +18,7 @@ const Signup = () => {
   const [nick, onChangeNick] = useInput('');
   const [password, onChangePassword] = useInput('');
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
+  const { isSigningUp, me  } = useSelector((state) => state.user);
 
   const onSubmit = useCallback(() => {
     if (password !== passwordCheck) {
@@ -25,7 +27,7 @@ const Signup = () => {
     if (!term) {
       return setTermError(true);
     }
-    dispatch(signUpAction({
+    dispatch(signUpRequestAction({
       id,
       password,
       nick,
@@ -74,7 +76,7 @@ const Signup = () => {
           {termError && <div style={{ color: 'red' }}>약관에 동의하셔야 합니다.</div>}
         </div>
         <div style={{ marginTop: 10 }}>
-          <Button type="primary" htmlType="submit">가입하기</Button>
+          <Button type="primary" htmlType="submit" loading={isSigningUp}>가입하기</Button>
         </div>
       </Form>
     </AppLayout>
