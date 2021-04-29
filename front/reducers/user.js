@@ -1,13 +1,5 @@
 import produce from "../utils/produce";
 
-const dummyUser = {
-  id: 1,
-  nickname: '리라리',
-  Posts: [],
-  Followings: [],
-  Followers: [],
-};
-
 export const initialState = {
   logInLoading: false, // 로그인 시도중
   logInDone: false,
@@ -50,53 +42,75 @@ export const logoutRequestAction = () => ({
   type: LOG_OUT_REQUEST,
 });
 
-const reducer = (state = initialState, action) => produce(state, (draft) => {
+const dummyUser = (data) => ({
+  ...data,
+  id: 1,
+  nickname: '리라리',
+  Posts: [],
+  Followings: [],
+  Followers: [],
+});
+
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case LOG_IN_REQUEST:
-      draft.logInLoading = true;
-      draft.logInError = null;
-      draft.logInDone = false;
-      break;
+      return{
+        ...state,
+        logInLoading: true,
+        logInError: null,
+        logInDone: false,
+      }
     case LOG_IN_SUCCESS:
-      draft.logInLoading = false;
-      draft.me = dummyUser;
-      draft.logInDone = true;
-      break;
+      return{
+        ...state,
+        logInLoading: false,
+        me: dummyUser(action.data),
+        logInDone: true
+      }
     case LOG_IN_FAILURE:
-      draft.logInLoading = false;
-      draft.logInError = action.error;
-      break;
+      return{
+        ...state,
+        logInLoading: false,
+        logInError: action.error
+      }  
     case LOG_OUT_REQUEST:
-      draft.logOutLoading = true;
-      draft.logOutError = null;
-      draft.logOutDone = false;
-      break;
+      return{
+        logOutLoading: true,
+        logOutError: null,
+        logOutDone: false,
+      }
     case LOG_OUT_SUCCESS:
-      draft.logOutLoading = false;
-      draft.logOutDone = true;
-      draft.me = null;
-      break;
+      return{
+        logOutLoading: false,
+        logOutDone: true,
+        me: null,
+      }
     case LOG_OUT_FAILURE:
-      draft.logOutLoading = false;
-      draft.logOutError = action.error;
-      break;
+      return {
+        logOutLoading: false,
+        logOutError: action.error,
+      }
     case SIGN_UP_REQUEST:
-      draft.signUpLoading = true;
-      draft.signUpError = null;
-      draft.signUpDone = false;
-      break;
+      return {
+        signUpLoading: true,
+        signUpError: null,
+        signUpDone: false,
+      }
     case SIGN_UP_SUCCESS:
-      draft.signUpLoading = false;
-      draft.signUpDone = true;
-      break;
+      return {
+        signUpLoading: false,
+        signUpDone: true,
+      }
     case SIGN_UP_FAILURE:
-      draft.signUpLoading = false;
-      draft.signUpError = action.error;
-      break;
-    default: {
-      break
-    }
+      return {
+        signUpLoading: false,
+        signUpError: action.error,
+      }
+    default: 
+      return{
+        ...state
+      }
   }
-});
+};
 
 export default reducer;

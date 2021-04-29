@@ -26,13 +26,17 @@ export const initialState = {
     }]
   }],
   imagePaths: [],
-  postAdded: false,
+  addPostLoading: false,
+  addPostDone: false,
+  addPostError: null,
 };
 
-const ADD_POST = 'ADD_POST';
+export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
+export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
+export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
 
-export const addPost = {
-  type: ADD_POST,
+export const addPostRequestAction = {
+  type: ADD_POST_REQUEST,
 };
 
 const dummyPost = {
@@ -48,11 +52,27 @@ const dummyPost = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case ADD_POST: {
+    case ADD_POST_REQUEST: {
+      return {
+        ...state,
+        addPostLoading: true,
+        addPostDone: false,
+        addPostError: null,
+      };
+    }
+    case ADD_POST_SUCCESS: {
       return {
         ...state,
         mainPosts: [dummyPost, ...state.mainPosts],
-        postAdded: true,
+        addPostLoading: false,
+        addPostDone: true,
+      };
+    }
+    case ADD_POST_FAILURE: {
+      return {
+        ...state,
+        addPostLoading: false,
+        addPostError: action.error
       };
     }
     default: {
