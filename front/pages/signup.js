@@ -14,7 +14,7 @@ const Signup = () => {
   const [term, setTerm] = useState(false);
   const [termError, setTermError] = useState(false);
 
-  const [id, onChangeId] = useInput('');
+  const [email, onChangeEmail] = useInput('');
   const [nick, onChangeNick] = useInput('');
   const [password, onChangePassword] = useInput('');
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const Signup = () => {
       return setTermError(true);
     }
     dispatch(signUpRequestAction({
-      id,
+      email,
       password,
       nick,
     }));
@@ -51,9 +51,9 @@ const Signup = () => {
       </Head>
       <Form onFinish={onSubmit} style={{ padding: 10 }}>
         <div>
-          <label htmlFor="user-id">아이디</label>
+          <label htmlFor="user-email">아이디</label>
           <br />
-          <Input name="user-id" value={id} required onChange={onChangeId} />
+          <Input name="user-email" value={email} required onChange={onChangeEmail} />
         </div>
         <div>
           <label htmlFor="user-nick">닉네임</label>

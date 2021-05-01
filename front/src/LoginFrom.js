@@ -18,24 +18,24 @@ const FormWapper = styled(Form)`
 `
 
 const LoginFrom = ({ }) => {
-  const [id, onChangeId] = useInput('');
+  const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
   const dispatch = useDispatch();
   const { logInLoading } = useSelector((state) => state.user)
 
   const onSubmitForm = useCallback(() => {
     dispatch(loginRequestAction({
-      id,
+      email,
       password,
     }));
-  }, [id, password]);
+  }, [email, password]);
   
   return(
     <FormWapper onFinish={onSubmitForm}>
       <div>
-        <label htmlFor="user-id">아이디</label>
+        <label htmlFor="user-email">아이디</label>
         <br />
-        <Input name="user-id" value={id} onChange={onChangeId} requried="true" />
+        <Input name="user-email" value={email} onChange={onChangeEmail} requried="true" />
       </div>
       <div>
         <label htmlFor="user-password">비밀번호</label>
