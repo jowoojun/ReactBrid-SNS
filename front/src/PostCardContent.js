@@ -10,9 +10,9 @@ const PostCardContent = ({ content }) => (
           <Link
             href={{ pathname: '/hashtag', query: { tag: t.slice(1) } }}
             as={`/hashtag/${t.slice(1)}`}
-            key={i}
+            key={t.slice(1) + String(i)}
           >
-            <a>{t}</a>
+            {t}
           </Link>
         );
       }

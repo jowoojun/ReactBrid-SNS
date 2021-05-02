@@ -1,9 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
-import { Card, Button, Avatar, Popover, List, Comment } from 'antd';
+import {
+  RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, EllipsisOutlined,
+} from '@ant-design/icons';
+import {
+  Card, Button, Avatar, Popover, List, Comment,
+} from 'antd';
 
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
@@ -11,7 +14,7 @@ import PostCardContent from './PostCardContent';
 
 const PostCard = ({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
-  const id = useSelector((state) => state.user.me? state.user.me.id : null);
+  const id = useSelector((state) => (state.user.me ? state.user.me.id : null));
 
   const [liked, setLiked] = useState(false);
 
@@ -54,12 +57,12 @@ const PostCard = ({ post }) => {
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
           title={post.User.nickname}
-          description={
+          description={(
             <div>
               <PostCardContent content={post.content} />
               {post.Images[0] && <PostImages images={post.Images} />}
             </div>
-          }
+          )}
         />
         {}
       </Card>
@@ -72,7 +75,7 @@ const PostCard = ({ post }) => {
             dataSource={post.Comments}
             renderItem={(item) => (
               <li>
-                <Comment 
+                <Comment
                   author={item.User.nickname}
                   avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
                   content={item.Comment}
@@ -83,18 +86,25 @@ const PostCard = ({ post }) => {
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
 PostCard.propTypes = {
   post: PropTypes.shape({
     id: PropTypes.number,
-    User: PropTypes.object,
+    User: PropTypes.shape({
+      id: PropTypes.number,
+      nickname: PropTypes.string,
+    }),
     content: PropTypes.string,
-    createdAt: PropTypes.object,
+    createdAt: PropTypes.shape({}),
     Comments: PropTypes.arrayOf(PropTypes.any),
     Images: PropTypes.arrayOf(PropTypes.any),
   }),
+};
+
+PostCard.defaultProps = {
+  post: null,
 };
 
 export default PostCard;

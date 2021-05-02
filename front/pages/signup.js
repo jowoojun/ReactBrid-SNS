@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { Form, Input, Checkbox, Button } from 'antd';
+import {
+  Form, Input, Checkbox, Button,
+} from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import Head from 'next/head';
 
@@ -18,14 +20,14 @@ const Signup = () => {
   const [nick, onChangeNick] = useInput('');
   const [password, onChangePassword] = useInput('');
   const dispatch = useDispatch();
-  const { isSigningUp, me  } = useSelector((state) => state.user);
+  const { isSigningUp } = useSelector((state) => state.user);
 
   const onSubmit = useCallback(() => {
     if (password !== passwordCheck) {
-      return setPasswordError(true);
+      setPasswordError(true);
     }
     if (!term) {
-      return setTermError(true);
+      setTermError(true);
     }
     dispatch(signUpRequestAction({
       email,

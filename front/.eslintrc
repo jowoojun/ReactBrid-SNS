@@ -1,0 +1,57 @@
+{
+  "parser": "babel-eslint",
+  "root": true,
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "js": true,
+    }
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "extends": [
+    "airbnb"
+  ],
+  "plugins": [
+    "import",
+    "@emotion",
+    "react-hooks"
+  ],
+  "rules": {
+    "@emotion/jsx-import": "error",
+    "jsx-a11y/label-has-associated-control": [ "error", {
+      "required": {
+        "some": [ "nesting", "id"  ]
+      }
+    }],
+    "jsx-a11y/label-has-for": [ "error", {
+      "required": {
+        "some": [ "nesting", "id"  ]
+      }
+    }],
+    "react/jsx-filename-extension": [
+      1, { "extensions": [".js", ".jsx"] }
+    ],
+    "indent": [
+        "error",
+        2
+    ],
+    "linebreak-style": [
+        "error",
+        "unix"
+    ],
+    "quotes": [
+        "error",
+        "single"
+    ],
+    "semi": [
+        "error",
+        "always"
+    ]
+  }
+}

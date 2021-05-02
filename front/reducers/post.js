@@ -23,7 +23,7 @@ export const initialState = {
         nickname: '세나',
       },
       content: '이 게임 얼른 현질 하고싶어요~',
-    }]
+    }],
   }],
   imagePaths: [],
   addPostLoading: false,
@@ -35,9 +35,19 @@ export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
 
-export const addPostRequestAction = {
+export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
+export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
+export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
+
+export const addPostRequestAction = (data) => ({
   type: ADD_POST_REQUEST,
-};
+  data,
+});
+
+export const addCommentRequestAction = (data) => ({
+  type: ADD_COMMENT_REQUEST,
+  data,
+});
 
 const dummyPost = {
   id: 2,
@@ -52,33 +62,32 @@ const dummyPost = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case ADD_POST_REQUEST: {
-      return {
-        ...state,
-        addPostLoading: true,
-        addPostDone: false,
-        addPostError: null,
-      };
-    }
-    case ADD_POST_SUCCESS: {
-      return {
-        ...state,
-        mainPosts: [dummyPost, ...state.mainPosts],
-        addPostLoading: false,
-        addPostDone: true,
-      };
-    }
-    case ADD_POST_FAILURE: {
-      return {
-        ...state,
-        addPostLoading: false,
-        addPostError: action.error
-      };
-    }
-    default: {
-      return {
-        ...state,
-      };
-    }
+  case ADD_POST_REQUEST: {
+    return {
+      ...state,
+      addPostLoading: true,
+      addPostDone: false,
+      addPostError: null,
+    };
+  }
+  case ADD_POST_SUCCESS: {
+    return {
+      ...state,
+      mainPosts: [dummyPost, ...state.mainPosts],
+      addPostLoading: false,
+      addPostDone: true,
+    };
+  }
+  case ADD_POST_FAILURE: {
+    return {
+      ...state,
+      addPostLoading: false,
+      addPostError: action.error,
+    };
+  }
+  default:
+    return {
+      ...state,
+    };
   }
 };

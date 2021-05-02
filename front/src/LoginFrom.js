@@ -1,27 +1,26 @@
-import PropTypes from 'prop-types'
-import Link from 'next/link'
-import { useCallback, useState } from 'react'
-import { Input, Form, Button } from 'antd'
-import styled from '@emotion/styled'
-import {useDispatch, useSelector} from 'react-redux'
+import React, { useCallback } from 'react';
+import Link from 'next/link';
+import { Input, Form, Button } from 'antd';
+import styled from '@emotion/styled';
+import { useDispatch, useSelector } from 'react-redux';
 
-import useInput from '../hooks/useInput'
+import useInput from '../hooks/useInput';
 
 import { loginRequestAction } from '../reducers/user';
 
 const ButtonWapper = styled.div`
   margin-top: 10px
-`
+`;
 
 const FormWapper = styled(Form)`
   padding: 10px
-`
+`;
 
-const LoginFrom = ({ }) => {
+const LoginFrom = () => {
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
   const dispatch = useDispatch();
-  const { logInLoading } = useSelector((state) => state.user)
+  const { logInLoading } = useSelector((state) => state.user);
 
   const onSubmitForm = useCallback(() => {
     dispatch(loginRequestAction({
@@ -29,29 +28,31 @@ const LoginFrom = ({ }) => {
       password,
     }));
   }, [email, password]);
-  
-  return(
-    <FormWapper onFinish={onSubmitForm}>
-      <div>
-        <label htmlFor="user-email">아이디</label>
-        <br />
-        <Input name="user-email" value={email} onChange={onChangeEmail} requried="true" />
-      </div>
-      <div>
-        <label htmlFor="user-password">비밀번호</label>
-        <br />
-        <Input type="password" name="user-password" value={password} onChange={onChangePassword} requried="true" />
-      </div>
-      <ButtonWapper>
-        <Button type="primary" htmlType="submit" loading={logInLoading}>로그인</Button>
-        <Link href="/signup"><a><button>SignUp</button></a></Link>
-      </ButtonWapper>
-    </FormWapper>
-  )
-}
+
+  return (
+    <>
+      <FormWapper onFinish={onSubmitForm}>
+        <div>
+          <label htmlFor="user-email">아이디</label>
+          <br />
+          <Input type="email" name="user-email" value={email} onChange={onChangeEmail} requried="true" />
+        </div>
+        <div>
+          <label htmlFor="user-password">비밀번호</label>
+          <br />
+          <Input type="password" name="user-password" value={password} onChange={onChangePassword} requried="true" />
+        </div>
+        <ButtonWapper>
+          <Button type="primary" htmlType="submit" loading={logInLoading}>로그인</Button>
+          <Link href="/signup"><button type="button">SignUp</button></Link>
+        </ButtonWapper>
+      </FormWapper>
+    </>
+  );
+};
 
 LoginFrom.propTypes = {
-  
-}
+
+};
 
 export default LoginFrom;

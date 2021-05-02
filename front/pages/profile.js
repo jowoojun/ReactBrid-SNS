@@ -1,16 +1,14 @@
-import Head from 'next/head'
-import { useSelector } from 'react-redux';
+import React from 'react';
+import Head from 'next/head';
 
-import AppLayout from '../src/AppLayout'
-import FollowList from '../src/FollowList'
-import NicknameEditForm from '../src/NicknameEditForm'
+import AppLayout from '../src/AppLayout';
+import FollowList from '../src/FollowList';
+import NicknameEditForm from '../src/NicknameEditForm';
 
 const Profile = () => {
-  const { isLoggedIn } = useSelector(state => state.user);
-
-  const followerList = [{nickname: "바보"}, {nickname: "바보"}, {nickname: "바보"}, {nickname: "바보"}]
-  const followingList = [{nickname: "바보"}, {nickname: "바보"}, {nickname: "바보"}, {nickname: "바보"}]
-  return(
+  const followerList = [{ nickname: '바보' }, { nickname: '바보' }, { nickname: '바보' }, { nickname: '바보' }];
+  const followingList = [{ nickname: '바보' }, { nickname: '바보' }, { nickname: '바보' }, { nickname: '바보' }];
+  return (
     <>
       <Head>
         <title>내 프로필 | Rwitter</title>
@@ -27,7 +25,7 @@ const Profile = () => {
         />
       </AppLayout>
     </>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;

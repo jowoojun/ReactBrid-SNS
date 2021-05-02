@@ -1,5 +1,5 @@
-import styled from '@emotion/styled'
-import { css } from '@emotion/react'
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { CloseOutlined } from '@ant-design/icons';
 
 export const Overlay = styled.div`
@@ -18,7 +18,7 @@ export const GlobalStyle = css`
   .ant-card-cover {
     transform: none !important;
   }
-`
+`;
 
 export const Header = styled.header`
   height: 44px;
