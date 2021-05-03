@@ -55,8 +55,8 @@ export const addCommentRequestAction = (data) => ({
 });
 
 const dummyPost = (data) => ({
-  id: shortid.generate(),
-  content: data,
+  id: data.id,
+  content: data.content,
   User: {
     id: 1,
     nickname: '리라',
