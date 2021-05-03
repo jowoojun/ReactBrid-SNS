@@ -1,3 +1,5 @@
+import shortid from 'shortid';
+
 export const initialState = {
   mainPosts: [{
     id: 1,
@@ -49,16 +51,16 @@ export const addCommentRequestAction = (data) => ({
   data,
 });
 
-const dummyPost = {
-  id: 2,
-  content: '이것은 더미데이터입니다.',
+const dummyPost = (data) => ({
+  id: shortid.generate(),
+  content: data,
   User: {
     id: 1,
     nickname: '리라',
   },
   Images: [],
   Comments: [],
-};
+});
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -73,7 +75,7 @@ export default (state = initialState, action) => {
   case ADD_POST_SUCCESS: {
     return {
       ...state,
-      mainPosts: [dummyPost, ...state.mainPosts],
+      mainPosts: [dummyPost(action.data), ...state.mainPosts],
       addPostLoading: false,
       addPostDone: true,
     };

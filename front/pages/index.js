@@ -6,12 +6,12 @@ import PostCard from '../src/PostCard';
 import AppLayout from '../src/AppLayout';
 
 const Home = () => {
-  const { logInDone } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
   const { mainPosts } = useSelector((state) => state.post);
 
   return (
     <AppLayout>
-      {logInDone && <PostForm />}
+      {me && <PostForm />}
       {mainPosts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
