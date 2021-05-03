@@ -6,6 +6,7 @@ import { logoutRequestAction } from '../reducers/user';
 
 const UserProfile = () => {
   const { me, logOutLoading } = useSelector((state) => state.user);
+  const { mainPosts } = useSelector((state) => state.post);
   const dispatch = useDispatch();
 
   const onLogout = useCallback(() => {
@@ -17,17 +18,17 @@ const UserProfile = () => {
       <div key="tiwt">
         쨱짹
         <br />
-        0
+        {mainPosts.filter((v) => v.User.id === me.id).length}
       </div>,
       <div key="followings">
         팔로잉
         <br />
-        0
+        { me.Followings.length }
       </div>,
       <div key="followers">
         팔로워
         <br />
-        0
+        { me.Followers.length }
       </div>,
     ]}
     >
