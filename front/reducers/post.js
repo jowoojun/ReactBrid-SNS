@@ -31,6 +31,9 @@ export const initialState = {
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
+  removePostLoading: false,
+  removePostDone: false,
+  removePostError: null,
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
@@ -40,12 +43,21 @@ export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
 
+export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
+export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
+export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
+
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
 export const addPostRequestAction = (data) => ({
   type: ADD_POST_REQUEST,
+  data,
+});
+
+export const removePostRequestAction = (data) => ({
+  type: REMOVE_POST_REQUEST,
   data,
 });
 
@@ -97,6 +109,29 @@ export default (state = initialState, action) => {
       ...state,
       addPostLoading: false,
       addPostError: action.error,
+    };
+  }
+  case REMOVE_POST_REQUEST: {
+    return {
+      ...state,
+      removePostLoading: true,
+      removePostDone: false,
+      removePostError: null,
+    };
+  }
+  case REMOVE_POST_SUCCESS: {
+    return {
+      ...state,
+      mainPosts: state.mainPosts.filter((v) => v.id !== action.data.postId),
+      removePostLoading: false,
+      removePostDone: true,
+    };
+  }
+  case REMOVE_POST_FAILURE: {
+    return {
+      ...state,
+      removePostLoading: false,
+      removePostError: action.error,
     };
   }
   case ADD_COMMENT_REQUEST: {

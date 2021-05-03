@@ -5,10 +5,11 @@ import shortid from 'shortid';
 
 import {
   ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
+  REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE,
   ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE,
 } from '../reducers/post';
 import {
-  ADD_POST_TO_ME,
+  ADD_POST_TO_ME, REMOVE_POST_OF_ME,
 } from '../reducers/user';
 
 // 포스트 생성하기
@@ -45,6 +46,35 @@ function* watchAddPost() {
 }
 
 // 포스트 생성하기
+// function removePostAPI(data) {
+//   return axios.delete(`/api/post/${data.id}`);
+// }
+
+function* removePost(action) {
+  try {
+    // const result = yield call(addPostAPI, action.data);
+    yield delay(1000);
+    yield put({
+      type: REMOVE_POST_SUCCESS,
+      data: action.data,
+    });
+    yield put({
+      type: REMOVE_POST_OF_ME,
+      data: action.data,
+    });
+  } catch (err) {
+    yield put({
+      type: REMOVE_POST_FAILURE,
+      data: err.response.data,
+    });
+  }
+}
+
+function* watchRemovePost() {
+  yield takeLatest(REMOVE_POST_REQUEST, removePost);
+}
+
+// 포스트 생성하기
 // function addCommentAPI(data) {
 //   return axios.post(`/api/post/${postId}/comment`, data);
 // }
@@ -72,6 +102,7 @@ function* watchAddComment() {
 export default function* postSaga() {
   yield all([
     fork(watchAddPost),
+    fork(watchRemovePost),
     fork(watchAddComment),
   ]);
 }
