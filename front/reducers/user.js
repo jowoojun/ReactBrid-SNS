@@ -73,34 +73,40 @@ const reducer = (state = initialState, action) => {
     };
   case LOG_OUT_REQUEST:
     return {
+      ...state,
       logOutLoading: true,
       logOutError: null,
       logOutDone: false,
     };
   case LOG_OUT_SUCCESS:
     return {
+      ...state,
       logOutLoading: false,
       logOutDone: true,
       me: null,
     };
   case LOG_OUT_FAILURE:
     return {
+      ...state,
       logOutLoading: false,
       logOutError: action.error,
     };
   case SIGN_UP_REQUEST:
     return {
+      ...state,
       signUpLoading: true,
       signUpError: null,
       signUpDone: false,
     };
   case SIGN_UP_SUCCESS:
     return {
+      ...state,
       signUpLoading: false,
       signUpDone: true,
     };
   case SIGN_UP_FAILURE:
     return {
+      ...state,
       signUpLoading: false,
       signUpError: action.error,
     };
