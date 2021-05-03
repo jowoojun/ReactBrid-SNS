@@ -78,7 +78,7 @@ const PostCard = ({ post }) => {
                 <Comment
                   author={item.User.nickname}
                   avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
-                  content={item.Comment}
+                  content={item.content}
                 />
               </li>
             )}
@@ -100,11 +100,7 @@ PostCard.propTypes = {
     createdAt: PropTypes.shape({}),
     Comments: PropTypes.arrayOf(PropTypes.any),
     Images: PropTypes.arrayOf(PropTypes.any),
-  }),
-};
-
-PostCard.defaultProps = {
-  post: null,
+  }).isRequired,
 };
 
 export default PostCard;
