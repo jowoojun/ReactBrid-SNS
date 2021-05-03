@@ -47,7 +47,7 @@ const CommentForm = ({ post }) => {
 
 CommentForm.propTypes = {
   post: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     User: PropTypes.shape({
       id: PropTypes.number,
       nickname: PropTypes.string,
