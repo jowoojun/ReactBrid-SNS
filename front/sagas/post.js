@@ -2,8 +2,10 @@ import {
   all, delay, put, fork, takeLatest,
 } from 'redux-saga/effects';
 import shortid from 'shortid';
+import faker from 'faker';
 
 import {
+  LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE,
   ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
   REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE,
   ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE,
@@ -11,6 +13,53 @@ import {
 import {
   ADD_POST_TO_ME, REMOVE_POST_OF_ME,
 } from '../reducers/user';
+
+// 포스트 불러오기
+function loadPostAPI(data) {
+  // return axios.post('/api/post', data);
+  return {
+    hasMorePosts: false,
+    data: Array(data).fill().map(() => ({
+      id: shortid.generate(),
+      User: {
+        id: shortid.generate(),
+        nickname: faker.name.findName(),
+      },
+      content: faker.lorem.paragraph(),
+      Images: [{
+        src: faker.image.image(),
+      }],
+      Comments: [{
+        User: {
+          id: shortid.generate(),
+          nickname: faker.name.findName(),
+        },
+        content: faker.lorem.sentence(),
+      }],
+    })),
+  };
+}
+
+function* loadPost(action) {
+  try {
+    // const result = yield call(loadPostAPI, action.data);
+    const result = loadPostAPI(10);
+    yield delay(1000);
+    yield put({
+      type: LOAD_POSTS_SUCCESS,
+      data: result,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_POSTS_FAILURE,
+      data: err.response.data,
+    });
+  }
+}
+
+function* watchLoadPost() {
+  yield takeLatest(LOAD_POSTS_REQUEST, loadPost);
+}
 
 // 포스트 생성하기
 // function addPostAPI(data) {
@@ -101,6 +150,7 @@ function* watchAddComment() {
 
 export default function* postSaga() {
   yield all([
+    fork(watchLoadPost),
     fork(watchAddPost),
     fork(watchRemovePost),
     fork(watchAddComment),
