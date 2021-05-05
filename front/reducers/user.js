@@ -10,6 +10,12 @@ export const initialState = {
   signUpLoading: false, // 회원가입 시도중
   signUpDone: false,
   signUpError: null,
+  followLoading: false, // 팔로우 시도중
+  followDone: false,
+  followError: null,
+  unfollowLoading: false, // 언팔로우 시도중
+  unfollowDone: false,
+  unfollowError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -27,6 +33,14 @@ export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
+// 팔로우
+export const FOLLOW_REQUEST = 'FOLLOW_REQUEST';
+export const FOLLOW_SUCCESS = 'FOLLOW_SUCCESS';
+export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
+// 언팔로우
+export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST';
+export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
+export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
@@ -45,13 +59,23 @@ export const logoutRequestAction = () => ({
   type: LOG_OUT_REQUEST,
 });
 
+export const followRequestAction = (data) => ({
+  type: FOLLOW_REQUEST,
+  data,
+});
+
+export const unfollowRequestAction = (data) => ({
+  type: UNFOLLOW_REQUEST,
+  data,
+});
+
 const dummyUser = (data) => ({
   ...data,
   id: 1,
   nickname: '리라리',
   Posts: [],
-  Followings: [{ nickname: '잇섭' }, { nickname: '스티브' }],
-  Followers: [{ nickname: '철수' }, { nickname: '영희' }, { nickname: '맹구' }, { nickname: '순희' }],
+  Followings: [{ id: 'OPSF', nickname: '잇섭' }, { id: 'TEFD', nickname: '스티브' }],
+  Followers: [{ id: 'OSK2', nickname: '철수' }, { id: 'BVVD', nickname: '영희' }, { id: 'GDAE', nickname: '맹구' }, { id: 'YRHF', nickname: '순희' }],
 });
 
 export default (state = initialState, action) => produce(state, (draft) => {
@@ -104,6 +128,41 @@ export default (state = initialState, action) => produce(state, (draft) => {
   case SIGN_UP_FAILURE: {
     draft.signUpLoading = false;
     draft.signUpError = action.error;
+    break;
+  }
+  case FOLLOW_REQUEST: {
+    draft.followLoading = true;
+    draft.followError = null;
+    draft.followDone = false;
+    break;
+  }
+  case FOLLOW_SUCCESS: {
+    draft.followLoading = false;
+    draft.followDone = true;
+    draft.me.Followings.push(action.data);
+    break;
+  }
+  case FOLLOW_FAILURE: {
+    draft.followLoading = false;
+    draft.followError = action.error;
+    break;
+  }
+  case UNFOLLOW_REQUEST: {
+    draft.unfollowLoading = true;
+    draft.unfollowError = null;
+    draft.unfollowDone = false;
+    break;
+  }
+  case UNFOLLOW_SUCCESS: {
+    draft.unfollowLoading = false;
+    draft.unfollowDone = true;
+    const userIndex = draft.me.Followings.findIndex((v) => v.id === action.data.id);
+    draft.me.Followings.splice(userIndex, 1);
+    break;
+  }
+  case UNFOLLOW_FAILURE: {
+    draft.unfollowLoading = false;
+    draft.unfollowError = action.error;
     break;
   }
   case ADD_POST_TO_ME: {

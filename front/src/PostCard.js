@@ -10,6 +10,7 @@ import {
 
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
+import PostCardTitle from './PostCardTitle';
 import PostCardContent from './PostCardContent';
 
 import { removePostRequestAction } from '../reducers/post';
@@ -66,7 +67,7 @@ const PostCard = ({ post }) => {
       >
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-          title={post.User.nickname}
+          title={<PostCardTitle post={post} />}
           description={(
             <div>
               <PostCardContent content={post.content} />
@@ -103,7 +104,7 @@ PostCard.propTypes = {
   post: PropTypes.shape({
     id: PropTypes.string,
     User: PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.string,
       nickname: PropTypes.string,
     }),
     content: PropTypes.string,
