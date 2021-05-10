@@ -1,9 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   Form, Input, Checkbox, Button,
 } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import Head from 'next/head';
+import Router from 'next/router';
 
 import AppLayout from '../src/AppLayout';
 import useInput from '../hooks/useInput';
@@ -20,7 +21,13 @@ const Signup = () => {
   const [nick, onChangeNick] = useInput('');
   const [password, onChangePassword] = useInput('');
   const dispatch = useDispatch();
-  const { isSigningUp } = useSelector((state) => state.user);
+  const { signUpLoading, signUpDone } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (signUpDone) {
+      Router.push('/');
+    }
+  }, [signUpDone]);
 
   const onSubmit = useCallback(() => {
     if (password !== passwordCheck) {
@@ -78,7 +85,7 @@ const Signup = () => {
           {termError && <div style={{ color: 'red' }}>약관에 동의하셔야 합니다.</div>}
         </div>
         <div style={{ marginTop: 10 }}>
-          <Button type="primary" htmlType="submit" loading={isSigningUp}>가입하기</Button>
+          <Button type="primary" htmlType="submit" loading={signUpLoading}>가입하기</Button>
         </div>
       </Form>
     </AppLayout>

@@ -1,7 +1,7 @@
 import {
-  all, fork, takeLatest, delay, put,
+  all, fork, takeLatest, delay, put, call,
 } from 'redux-saga/effects';
-
+import axios from 'axios';
 import {
   LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE,
   LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE,
@@ -60,16 +60,16 @@ function* watchLogOut() {
 }
 
 // 회원가입
-// function signUpAPI() {
-//   return axios.post('/api/signUp');
-// }
+function signUpAPI(data) {
+  return axios.post('http://localhost:3080/api/user/signUp', data);
+}
 
-function* signUp() {
+function* signUp(action) {
   try {
-    // const result = yield call(signUpAPI);
-    yield delay(1000);
+    const result = yield call(signUpAPI, action.data);
     yield put({
       type: SIGN_UP_SUCCESS,
+      data: result,
     });
   } catch (err) {
     yield put({
