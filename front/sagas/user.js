@@ -11,17 +11,16 @@ import {
 } from '../reducers/user';
 
 // 로그인
-// function logInAPI(data) {
-//   return axios.post('/api/login', data);
-// }
+function loginAPI(data) {
+  return axios.post('/user/login', data);
+}
 
-function* logIn(action) {
+function* login(action) {
   try {
-    // const result = yield call(logInAPI);
-    yield delay(1000);
+    const result = yield call(loginAPI, action.data);
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     yield put({
@@ -32,7 +31,7 @@ function* logIn(action) {
 }
 
 function* watchLogIn() {
-  yield takeLatest(LOG_IN_REQUEST, logIn);
+  yield takeLatest(LOG_IN_REQUEST, login);
 }
 
 // 로그아웃
@@ -61,7 +60,7 @@ function* watchLogOut() {
 
 // 회원가입
 function signUpAPI(data) {
-  return axios.post('http://localhost:3080/api/user/signUp', data);
+  return axios.post('/user/signUp', data);
 }
 
 function* signUp(action) {
