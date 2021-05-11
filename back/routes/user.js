@@ -25,7 +25,9 @@ router.post('/login', (req, res, next) => {
 })
 
 router.post('/logout', (req, res) => {
-  res.send('Hello, logout!')
+  req.logout();
+  req.session.destroy();
+  res.send('ok!');
 })
 
 router.post('/signUp', async (req, res, next) => {
