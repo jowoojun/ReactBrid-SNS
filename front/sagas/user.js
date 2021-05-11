@@ -35,16 +35,16 @@ function* watchLogIn() {
 }
 
 // 로그아웃
-// function logOutAPI(){
-//   return axios.post('/api/logout')
-// }
+function logOutAPI() {
+  return axios.post('/user/logout');
+}
 
 function* logOut() {
   try {
-    // const result = yield call(logOutAPI);
-    yield delay(1000);
+    const result = yield call(logOutAPI);
     yield put({
       type: LOG_OUT_SUCCESS,
+      data: result.data,
     });
   } catch (err) {
     yield put({
