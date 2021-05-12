@@ -69,14 +69,16 @@ export const unfollowRequestAction = (data) => ({
   data,
 });
 
-const dummyUser = (data) => ({
-  ...data,
-  id: 1,
-  nickname: '리라리',
-  Posts: [],
-  Followings: [{ id: 'OPSF', nickname: '잇섭' }, { id: 'TEFD', nickname: '스티브' }],
-  Followers: [{ id: 'OSK2', nickname: '철수' }, { id: 'BVVD', nickname: '영희' }, { id: 'GDAE', nickname: '맹구' }, { id: 'YRHF', nickname: '순희' }],
-});
+// const dummyUser = (data) => ({
+//   ...data,
+//   id: 1,
+//   nickname: '리라리',
+//   Posts: [],
+//   Followings: [{ id: 'OPSF', nickname: '잇섭' }, { id: 'TEFD', nickname: '스티브' }],
+//   Followers: [
+//     { id: 'OSK2', nickname: '철수' }, { id: 'BVVD', nickname: '영희' },
+//     { id: 'GDAE', nickname: '맹구' }, { id: 'YRHF', nickname: '순희' }],
+// });
 
 export default (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
@@ -88,7 +90,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
   }
   case LOG_IN_SUCCESS: {
     draft.logInLoading = false;
-    draft.me = dummyUser(action.data);
+    draft.me = action.data;
     draft.logInDone = true;
     break;
   }
