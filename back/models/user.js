@@ -23,8 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     db.User.hasMany(db.Post);
     db.User.hasMany(db.Comment);
     db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' }); // 좋아요!, Liked로 표시
-    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Follower', foreignKey: "FollowingId" }); // 팔로우!, Follower로 표시
-    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Following', foreignKey: "FollowerId" }); // 팔로우!, Following으로 표시
+    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: "FollowingId" }); // 팔로우!, Follower로 표시
+    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: "FollowerId" }); // 팔로우!, Following으로 표시
   };
   return User;
 }
