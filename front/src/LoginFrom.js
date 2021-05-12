@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { Input, Form, Button } from 'antd';
 import styled from '@emotion/styled';
@@ -20,7 +20,13 @@ const LoginFrom = () => {
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
   const dispatch = useDispatch();
-  const { logInLoading } = useSelector((state) => state.user);
+  const { logInLoading, logInError } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (logInError) {
+      alert(logInError);
+    }
+  }, [logInError]);
 
   const onSubmitForm = useCallback(() => {
     dispatch(loginRequestAction({
