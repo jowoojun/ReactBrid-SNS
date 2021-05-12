@@ -49,6 +49,11 @@ app.get('/', (req, res) => {
   res.send('Hello, Express!')
 })
 
+// 에러를 처리하기 위한 middle ware
+// app.use((err, req, res, next => {
+  
+// })
+
 // 서버 실행
 app.listen(3080, () => {
   console.log('running...!')

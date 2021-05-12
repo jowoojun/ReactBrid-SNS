@@ -4,8 +4,9 @@ const bcrypt = require('bcrypt')
 const passport = require('passport');
 
 const { User, Post } = require('../models');
+const { needLogin, needNotLogin } = require('./middlewares')
 
-router.post('/login', (req, res, next) => {
+router.post('/login', needNotLogin, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if(err){
       console.error(err);
@@ -39,13 +40,13 @@ router.post('/login', (req, res, next) => {
   })(req, res, next); // 미들웨어 확장!! => express기법 중 하나
 })
 
-router.post('/logout', (req, res) => {
+router.post('/logout', needLogin, (req, res) => {
   req.logout();
   req.session.destroy();
   res.send('ok!');
 })
 
-router.post('/signUp', async (req, res, next) => {
+router.post('/signUp', needNotLogin, async (req, res, next) => {
   try{
     const exUser = await User.findOne({
       where: {
@@ -69,11 +70,11 @@ router.post('/signUp', async (req, res, next) => {
   }
 })
 
-router.post('/follow', (req, res) => {
+router.post('/follow', needLogin, (req, res) => {
   res.send('Hello, follow!')
 })
 
-router.post('/unfollow', (req, res) => {
+router.post('/unfollow', needLogin, (req, res) => {
   res.send('Hello, unfollow!')
 })
 
