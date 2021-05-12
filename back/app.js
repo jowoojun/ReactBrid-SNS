@@ -16,8 +16,8 @@ dotenv.config()
 
 // Access-Control-Allow-Origin 에러
 app.use(cors({ 
-  origin: '*', // 모든 url 접근 허락
-  credentials: false,
+  origin: 'http://localhost:3000', // front 서버 주소
+  credentials: true, // 쿠키도 같이 전달하고 싶으면 true로 해야함. 쿠키 사용시 true 안하면 401에러가 뜸.
 }))
 
 // front로부터 데이터 받기 설정
