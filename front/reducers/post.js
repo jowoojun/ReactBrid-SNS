@@ -1,4 +1,3 @@
-import shortid from 'shortid';
 import produce from 'immer';
 
 export const initialState = {
@@ -62,14 +61,14 @@ export const addCommentRequestAction = (data) => ({
 //   Comments: [],
 // });
 
-const dummyComment = (data) => ({
-  id: shortid.generate(),
-  content: data,
-  User: {
-    id: 1,
-    nickname: '루리라',
-  },
-});
+// const dummyComment = (data) => ({
+//   id: shortid.generate(),
+//   content: data,
+//   User: {
+//     id: 1,
+//     nickname: '루리라',
+//   },
+// });
 
 export default (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
@@ -133,8 +132,8 @@ export default (state = initialState, action) => produce(state, (draft) => {
     break;
   }
   case ADD_COMMENT_SUCCESS: {
-    const post = draft.mainPosts.find((v) => v.id === action.data.postId);
-    post.Comments.unshift(dummyComment(action.data.content));
+    const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+    post.Comments.unshift(action.data);
     draft.addCommentLoading = false;
     draft.addCommentDone = true;
     break;

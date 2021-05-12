@@ -120,17 +120,16 @@ function* watchRemovePost() {
 }
 
 // 포스트 생성하기
-// function addCommentAPI(data) {
-//   return axios.post(`/api/post/${postId}/comment`, data);
-// }
+function addCommentAPI(data) {
+  return axios.post(`/post/${data.postId}/comment`, data);
+}
 
 function* addComment(action) {
   try {
-    // const result = yield call(addPostAPI, action.data);
-    yield delay(1000);
+    const result = yield call(addCommentAPI, action.data);
     yield put({
       type: ADD_COMMENT_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     yield put({
