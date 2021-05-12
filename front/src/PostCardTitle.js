@@ -32,9 +32,9 @@ const PostCardTitle = ({ post }) => {
 
 PostCardTitle.propTypes = {
   post: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.number,
     User: PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.number,
       nickname: PropTypes.string,
     }),
     content: PropTypes.string,

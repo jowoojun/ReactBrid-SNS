@@ -51,16 +51,16 @@ export const addCommentRequestAction = (data) => ({
   data,
 });
 
-const dummyPost = (data) => ({
-  id: data.id,
-  content: data.content,
-  User: {
-    id: 1,
-    nickname: '리라',
-  },
-  Images: [],
-  Comments: [],
-});
+// const dummyPost = (data) => ({
+//   id: data.id,
+//   content: data.content,
+//   User: {
+//     id: 1,
+//     nickname: '리라',
+//   },
+//   Images: [],
+//   Comments: [],
+// });
 
 const dummyComment = (data) => ({
   id: shortid.generate(),
@@ -99,7 +99,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
     break;
   }
   case ADD_POST_SUCCESS: {
-    draft.mainPosts.unshift(dummyPost(action.data));
+    draft.mainPosts.unshift(action.data);
     draft.addPostLoading = false;
     draft.addPostDone = true;
     break;

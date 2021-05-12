@@ -1,8 +1,9 @@
 import {
-  all, delay, put, fork, takeLatest,
+  all, delay, put, fork, takeLatest, call,
 } from 'redux-saga/effects';
 import shortid from 'shortid';
 import faker from 'faker';
+import axios from 'axios';
 
 import {
   LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE,
@@ -62,25 +63,20 @@ function* watchLoadPost() {
 }
 
 // 포스트 생성하기
-// function addPostAPI(data) {
-//   return axios.post('/api/post', data);
-// }
+function addPostAPI(data) {
+  return axios.post('/post', data);
+}
 
 function* addPost(action) {
   try {
-    // const result = yield call(addPostAPI, action.data);
-    yield delay(1000);
-    const id = shortid.generate();
+    const result = yield call(addPostAPI, action.data);
     yield put({
       type: ADD_POST_SUCCESS,
-      data: {
-        id,
-        content: action.data,
-      },
+      data: result.data,
     });
     yield put({
       type: ADD_POST_TO_ME,
-      data: id,
+      data: result.data.id,
     });
   } catch (err) {
     yield put({
