@@ -1,8 +1,8 @@
 import {
   all, delay, put, fork, takeLatest, call,
 } from 'redux-saga/effects';
-import shortid from 'shortid';
-import faker from 'faker';
+// import shortid from 'shortid';
+// import faker from 'faker';
 import axios from 'axios';
 
 import {
@@ -16,39 +16,38 @@ import {
 } from '../reducers/user';
 
 // 포스트 불러오기
-function loadPostAPI(data) {
-  // return axios.post('/api/post', data);
-  return {
-    hasMorePosts: false,
-    data: Array(data).fill().map(() => ({
-      id: shortid.generate(),
-      User: {
-        id: shortid.generate(),
-        nickname: faker.name.findName(),
-      },
-      content: faker.lorem.paragraph(),
-      Images: [{
-        src: faker.image.image(),
-      }],
-      Comments: [{
-        User: {
-          id: shortid.generate(),
-          nickname: faker.name.findName(),
-        },
-        content: faker.lorem.sentence(),
-      }],
-    })),
-  };
+function loadPostAPI() {
+  return axios.get('/posts');
+  // return {
+  //   hasMorePosts: false,
+  //   data: Array(data).fill().map(() => ({
+  //     id: shortid.generate(),
+  //     User: {
+  //       id: shortid.generate(),
+  //       nickname: faker.name.findName(),
+  //     },
+  //     content: faker.lorem.paragraph(),
+  //     Images: [{
+  //       src: faker.image.image(),
+  //     }],
+  //     Comments: [{
+  //       User: {
+  //         id: shortid.generate(),
+  //         nickname: faker.name.findName(),
+  //       },
+  //       content: faker.lorem.sentence(),
+  //     }],
+  //   })),
+  // };
 }
 
-function* loadPost(action) {
+function* loadPost() {
   try {
-    // const result = yield call(loadPostAPI, action.data);
-    const result = loadPostAPI(10);
-    yield delay(1000);
+    const result = yield call(loadPostAPI);
+    // const result = loadPostAPI(10);
     yield put({
       type: LOAD_POSTS_SUCCESS,
-      data: result,
+      data: result.data,
     });
   } catch (err) {
     yield put({

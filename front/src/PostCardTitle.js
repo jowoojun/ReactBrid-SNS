@@ -38,7 +38,7 @@ PostCardTitle.propTypes = {
       nickname: PropTypes.string,
     }),
     content: PropTypes.string,
-    createdAt: PropTypes.shape({}),
+    createdAt: PropTypes.string,
     Comments: PropTypes.arrayOf(PropTypes.any),
     Images: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,
