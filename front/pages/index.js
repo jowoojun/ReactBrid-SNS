@@ -6,6 +6,7 @@ import PostCard from '../src/PostCard';
 import AppLayout from '../src/AppLayout';
 
 import { loadPostRequestAction } from '../reducers/post';
+import { loadUserRequestAction } from '../reducers/user';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const Home = () => {
   const { mainPosts, hasMorePosts, loadPostLoading } = useSelector((state) => state.post);
 
   useEffect(() => {
+    dispatch(loadUserRequestAction());
     dispatch(loadPostRequestAction());
   }, []);
 

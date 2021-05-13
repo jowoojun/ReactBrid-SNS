@@ -1,6 +1,9 @@
 import produce from 'immer';
 
 export const initialState = {
+  loadUserLoading: false, // 사용자 정보 갱신 시도중
+  loadUserDone: false,
+  loadUserError: null,
   logInLoading: false, // 로그인 시도중
   logInDone: false,
   logInError: null,
@@ -20,6 +23,11 @@ export const initialState = {
   signUpData: {},
   loginData: {},
 };
+
+// 사용자 정보 갱신
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 
 // 로그인
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
@@ -44,6 +52,10 @@ export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
+
+export const loadUserRequestAction = () => ({
+  type: LOAD_USER_REQUEST,
+});
 
 export const signUpRequestAction = (data) => ({
   type: SIGN_UP_REQUEST,
@@ -82,6 +94,23 @@ export const unfollowRequestAction = (data) => ({
 
 export default (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
+  case LOAD_USER_REQUEST: {
+    draft.loadUserLoading = true;
+    draft.loadUserError = null;
+    draft.loadUserDone = false;
+    break;
+  }
+  case LOAD_USER_SUCCESS: {
+    draft.loadUserLoading = false;
+    draft.me = action.data;
+    draft.loadUserDone = true;
+    break;
+  }
+  case LOAD_USER_FAILURE: {
+    draft.loadUserLoading = false;
+    draft.loadUserError = action.error;
+    break;
+  }
   case LOG_IN_REQUEST: {
     draft.logInLoading = true;
     draft.logInError = null;
