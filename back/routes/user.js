@@ -6,6 +6,37 @@ const passport = require('passport');
 const { User, Post } = require('../models');
 const { needLogin, needNotLogin } = require('./middlewares')
 
+router.get('/', async (req, res, next) => {
+  try{
+    if(req.user){
+      const safeUser = await User.findOne({
+        where: { id: req.user.id },
+        attributes: {
+          exclude: ['password']
+        },
+        include: [{
+          model: Post,
+          attributes: ['id'],
+        }, {
+          model: User,
+          as: 'Followings',
+          attributes: ['id'],
+        }, {
+          model: User,
+          as: 'Followers',
+          attributes: ['id'],
+        }]
+      })
+      res.status(200).json(safeUser);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch(err) {
+    console.error(err)
+    next(err);
+  }
+})
+
 router.post('/login', needNotLogin, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if(err){
@@ -27,12 +58,15 @@ router.post('/login', needNotLogin, (req, res, next) => {
         },
         include: [{
           model: Post,
+          attributes: ['id'],
         }, {
           model: User,
           as: 'Followings',
+          attributes: ['id'],
         }, {
           model: User,
           as: 'Followers',
+          attributes: ['id'],
         }]
       })
       return res.status(200).json(safeUser); // 200: 성공
