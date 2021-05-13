@@ -9,6 +9,7 @@ const app = express();
 
 const userRouter = require('./routes/user');
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 const passportConfig = require('./passport');
 
 // 환경변수 설정
@@ -38,6 +39,7 @@ passportConfig();
 // 라우터 관련
 app.use('/api/user', userRouter);
 app.use('/api/post', postRouter);
+app.use('/api/posts', postsRouter);
 
 // db연결
 db.sequelize.sync().then(() => {
