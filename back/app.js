@@ -5,6 +5,7 @@ const passport = require('passport')
 const session = require('express-session');
 const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv')
+const morgan = require('morgan');
 const app = express();
 
 const userRouter = require('./routes/user');
@@ -15,6 +16,7 @@ const passportConfig = require('./passport');
 // 환경변수 설정
 dotenv.config()
 
+app.use(morgan('dev'))
 // Access-Control-Allow-Origin 에러
 app.use(cors({ 
   origin: 'http://localhost:3000', // front 서버 주소
