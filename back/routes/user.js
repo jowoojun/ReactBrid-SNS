@@ -106,7 +106,7 @@ router.post('/signUp', needNotLogin, async (req, res, next) => {
 
 router.patch('/nickname', needLogin, async (req, res, next) => {
   try{
-    const user = await User.update({
+    await User.update({
       nickname: req.body.nickname,
     }, {
       where: { id: req.user.id },
