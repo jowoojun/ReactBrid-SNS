@@ -201,7 +201,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
     break;
   }
   case REMOVE_POST_OF_ME: {
-    draft.me.Posts = draft.me.Posts.filter((v) => v.id !== action.data.postId);
+    draft.me.Posts = draft.me.Posts.filter((v) => v.id !== action.data.PostId);
     break;
   }
   default:

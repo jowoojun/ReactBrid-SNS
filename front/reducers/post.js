@@ -139,7 +139,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
     break;
   }
   case REMOVE_POST_SUCCESS: {
-    draft.mainPosts = draft.mainPosts.filter((v) => v.id !== action.data.postId);
+    draft.mainPosts = draft.mainPosts.filter((v) => v.id !== action.data.PostId);
     draft.removePostLoading = false;
     draft.removePostDone = true;
     break;

@@ -26,10 +26,7 @@ const PostCard = ({ post }) => {
   }, []);
 
   const onDeletePost = useCallback(() => {
-    dispatch(removePostRequestAction({
-      userId: id,
-      postId: post.id,
-    }));
+    dispatch(removePostRequestAction({ postId: post.id }));
   }, []);
 
   const onLike = useCallback(() => {
