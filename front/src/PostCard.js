@@ -13,18 +13,13 @@ import CommentForm from './CommentForm';
 import PostCardTitle from './PostCardTitle';
 import PostCardContent from './PostCardContent';
 
-import { removePostRequestAction } from '../reducers/post';
+import { removePostRequestAction, likePostRequestAction, unlikePostRequestAction } from '../reducers/post';
 
 const PostCard = ({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
   const id = useSelector((state) => (state.user.me ? state.user.me.id : null));
-  const [liked, setLiked] = useState(false);
   const dispatch = useDispatch();
   const { removePostLoading } = useSelector((state) => state.post);
-
-  const onToggleLike = useCallback(() => {
-    setLiked((prev) => !prev);
-  }, []);
 
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev);
@@ -37,14 +32,29 @@ const PostCard = ({ post }) => {
     }));
   }, []);
 
+  const onLike = useCallback(() => {
+    if (!id) {
+      return alert('로그인이 필요합니다.');
+    }
+    return dispatch(likePostRequestAction({ postId: post.id }));
+  }, [id]);
+
+  const onUnlike = useCallback(() => {
+    if (!id) {
+      return alert('로그인이 필요합니다.');
+    }
+    return dispatch(unlikePostRequestAction({ postId: post.id }));
+  }, [id]);
+
+  const liked = post.Liker.find((v) => v.id === id);
   return (
     <div style={{ marginBottom: '20px' }} key={post.id}>
       <Card
         actions={[
           <RetweetOutlined key="retweet" />,
           liked
-            ? <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onToggleLike} />
-            : <HeartOutlined key="heart" onClick={onToggleLike} />,
+            ? <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onUnlike} />
+            : <HeartOutlined key="heart" onClick={onLike} />,
           <MessageOutlined key="message" onClick={onToggleComment} />,
           <Popover
             key="ellipsis"
@@ -111,6 +121,7 @@ PostCard.propTypes = {
     createdAt: PropTypes.string,
     Comments: PropTypes.arrayOf(PropTypes.any),
     Images: PropTypes.arrayOf(PropTypes.any),
+    Liker: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,
 };
 
