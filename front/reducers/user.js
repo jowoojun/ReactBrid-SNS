@@ -13,6 +13,9 @@ export const initialState = {
   signUpLoading: false, // 회원가입 시도중
   signUpDone: false,
   signUpError: null,
+  changeNicknameLoading: false, // 회원가입 시도중
+  changeNicknameDone: false,
+  changeNicknameError: null,
   followLoading: false, // 팔로우 시도중
   followDone: false,
   followError: null,
@@ -41,6 +44,10 @@ export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
+// 닉네임 변경
+export const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST';
+export const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS';
+export const CHANGE_NICKNAME_FAILURE = 'CHANGE_NICKNAME_FAILURE';
 // 팔로우
 export const FOLLOW_REQUEST = 'FOLLOW_REQUEST';
 export const FOLLOW_SUCCESS = 'FOLLOW_SUCCESS';
@@ -69,6 +76,11 @@ export const loginRequestAction = (data) => ({
 
 export const logoutRequestAction = () => ({
   type: LOG_OUT_REQUEST,
+});
+
+export const changeNicknameRequestAction = (data) => ({
+  type: CHANGE_NICKNAME_REQUEST,
+  data,
 });
 
 export const followRequestAction = (data) => ({
@@ -159,6 +171,23 @@ export default (state = initialState, action) => produce(state, (draft) => {
   case SIGN_UP_FAILURE: {
     draft.signUpLoading = false;
     draft.signUpError = action.error;
+    break;
+  }
+  case CHANGE_NICKNAME_REQUEST: {
+    draft.changeNicknameLoading = true;
+    draft.changeNicknameError = null;
+    draft.changeNicknameDone = false;
+    break;
+  }
+  case CHANGE_NICKNAME_SUCCESS: {
+    draft.me.nickname = action.data.nickname;
+    draft.changeNicknameLoading = false;
+    draft.changeNicknameDone = true;
+    break;
+  }
+  case CHANGE_NICKNAME_FAILURE: {
+    draft.changeNicknameLoading = false;
+    draft.changeNicknameError = action.error;
     break;
   }
   case FOLLOW_REQUEST: {
