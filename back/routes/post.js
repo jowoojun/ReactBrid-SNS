@@ -100,4 +100,19 @@ router.delete('/:postId/unlike', needLogin, async (req, res, next) => { // DELET
   }
 });
 
+router.delete('/:postId', needLogin, async (req, res, next) => { // DELETE /post/1/like
+  try {
+    await Post.destroy({
+      where: {
+        id: req.params.postId,
+        UserId: req.user.id,
+      }
+    })
+    res.status(200).json({ PostId: parseInt(req.params.postId) });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 module.exports = router;

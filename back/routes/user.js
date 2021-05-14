@@ -104,6 +104,20 @@ router.post('/signUp', needNotLogin, async (req, res, next) => {
   }
 })
 
+router.patch('/nickname', needLogin, async (req, res, next) => {
+  try{
+    const user = await User.update({
+      nickname: req.body.nickname,
+    }, {
+      where: { id: req.user.id },
+    })
+    res.status(200).json({ nickname: req.body.nickname })
+  } catch(err) {
+    console.err(error);
+    next(err);
+  }
+})
+
 router.post('/follow', needLogin, (req, res) => {
   res.send('Hello, follow!')
 })
