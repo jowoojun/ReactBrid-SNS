@@ -150,6 +150,19 @@ router.delete('/:userId/follow', needLogin, async (req, res, next) => {
   }
 })
 
+router.delete('/:userId/follower', needLogin, async (req, res, next) => {
+  try{
+    const user = await User.findOne({
+      where: { id: req.params.userId }
+    })
+    await user.removeFollowings(req.user.id);
+    res.status(200).json({ UserId: parseInt(req.params.userId) });
+  } catch(err) {
+    console.error(err);
+    next(err);
+  }
+})
+
 router.get('/followings', needLogin, async (req, res, next) => {
   try{
     const user = await User.findOne({
@@ -175,4 +188,5 @@ router.get('/followers', needLogin, async (req, res, next) => {
     next(err);
   }
 })
+
 module.exports = router;
