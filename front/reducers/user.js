@@ -28,6 +28,9 @@ export const initialState = {
   unfollowLoading: false, // 언팔로우 시도중
   unfollowDone: false,
   unfollowError: null,
+  removeFollowerLoading: false, // 팔로워 삭제 시도중
+  removeFollowerDone: false,
+  removeFollowerError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -62,6 +65,10 @@ export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
 export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST';
 export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
 export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
+// 팔로워 삭제
+export const REMOVE_FOLLOWER_REQUEST = 'REMOVE_FOLLOWER_REQUEST';
+export const REMOVE_FOLLOWER_SUCCESS = 'REMOVE_FOLLOWER_SUCCESS';
+export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE';
 // 팔로워 리스트 갱신
 export const LOAD_FOLLOWERS_REQUEST = 'LOAD_FOLLOWERS_REQUEST';
 export const LOAD_FOLLOWERS_SUCCESS = 'LOAD_FOLLOWERS_SUCCESS';
@@ -112,6 +119,11 @@ export const followRequestAction = (data) => ({
 
 export const unfollowRequestAction = (data) => ({
   type: UNFOLLOW_REQUEST,
+  data,
+});
+
+export const removeFollowerRequestAction = (data) => ({
+  type: REMOVE_FOLLOWER_REQUEST,
   data,
 });
 
@@ -278,6 +290,23 @@ export default (state = initialState, action) => produce(state, (draft) => {
   case UNFOLLOW_FAILURE: {
     draft.unfollowLoading = false;
     draft.unfollowError = action.error;
+    break;
+  }
+  case REMOVE_FOLLOWER_REQUEST: {
+    draft.removeFollowerLoading = true;
+    draft.removeFollowerError = null;
+    draft.removeFollowerDone = false;
+    break;
+  }
+  case REMOVE_FOLLOWER_SUCCESS: {
+    draft.removeFollowerLoading = false;
+    draft.removeFollowerDone = true;
+    draft.me.Followers = draft.me.Followers.filter((v) => v.id !== action.data.UserId);
+    break;
+  }
+  case REMOVE_FOLLOWER_FAILURE: {
+    draft.removeFollowerLoading = false;
+    draft.removeFollowerError = action.error;
     break;
   }
   case ADD_POST_TO_ME: {

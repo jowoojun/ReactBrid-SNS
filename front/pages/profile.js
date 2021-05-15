@@ -36,10 +36,12 @@ const Profile = () => {
         <NicknameEditForm />
         <FollowList
           header="팔로잉 목록"
+          type="followings"
           data={me.Followings}
         />
         <FollowList
           header="팔로워 목록"
+          type="followers"
           data={me.Followers}
         />
       </AppLayout>

@@ -12,6 +12,7 @@ import {
   CHANGE_NICKNAME_REQUEST, CHANGE_NICKNAME_SUCCESS, CHANGE_NICKNAME_FAILURE,
   FOLLOW_REQUEST, FOLLOW_SUCCESS, FOLLOW_FAILURE,
   UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE,
+  REMOVE_FOLLOWER_REQUEST, REMOVE_FOLLOWER_SUCCESS, REMOVE_FOLLOWER_FAILURE,
 } from '../reducers/user';
 
 // 사용자 정보 갱신
@@ -230,6 +231,30 @@ function* watchUnfollow() {
   yield takeLatest(UNFOLLOW_REQUEST, unfollow);
 }
 
+// 팔로워 삭제
+function removeFollowerAPI(data) {
+  return axios.delete(`/user/${data.userId}/follower`);
+}
+
+function* removeFollower(action) {
+  try {
+    const result = yield call(removeFollowerAPI, action.data);
+    yield put({
+      type: REMOVE_FOLLOWER_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: REMOVE_FOLLOWER_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function* watchRemoveFollower() {
+  yield takeLatest(REMOVE_FOLLOWER_REQUEST, removeFollower);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchLoadFollowers),
@@ -241,5 +266,6 @@ export default function* userSaga() {
     fork(watchSignUp),
     fork(watchFollow),
     fork(watchUnfollow),
+    fork(watchRemoveFollower),
   ]);
 }
