@@ -118,12 +118,36 @@ router.patch('/nickname', needLogin, async (req, res, next) => {
   }
 })
 
-router.post('/follow', needLogin, (req, res) => {
-  res.send('Hello, follow!')
+router.patch('/:userId/follow', needLogin, async (req, res, next) => {
+  try{
+    const user = await User.findOne({
+      where: { id: req.params.userId }
+    })
+    if(!user){
+      return res.status(403).send('해당 사용자가 존재하지 않습니다.')
+    }
+    await user.addFollowers(req.user.id);
+    res.status(200).json({ UserId: parseInt(req.params.userId) })
+  } catch (err) {
+    console.err(err);
+    next(err)
+  }
 })
 
-router.post('/unfollow', needLogin, (req, res) => {
-  res.send('Hello, unfollow!')
+router.delete('/:userId/follow', needLogin, async (req, res, next) => {
+  try{
+    const user = await User.findOne({
+      where: { id: req.params.userId }
+    })
+    if(!user){
+      return res.status(403).send('해당 사용자가 존재하지 않습니다.')
+    }
+    await user.removeFollowers(req.user.id);
+    res.status(201).json({ UserId: parseInt(req.params.userId) })
+  } catch (err) {
+    console.err(err);
+    next(err)
+  }
 })
 
 module.exports = router;
