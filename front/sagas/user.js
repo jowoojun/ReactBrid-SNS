@@ -1,5 +1,5 @@
 import {
-  all, fork, takeLatest, delay, put, call,
+  all, fork, takeLatest, put, call,
 } from 'redux-saga/effects';
 import axios from 'axios';
 import {
@@ -133,17 +133,16 @@ function* watchChangeNickname() {
 }
 
 // 팔로우
-// function followAPI() {
-//   return axios.post('/api/follow');
-// }
+function followAPI(data) {
+  return axios.patch(`/user/${data.userId}/follow`);
+}
 
 function* follow(action) {
   try {
-    // const result = yield call(followAPI);
-    yield delay(1000);
+    const result = yield call(followAPI, action.data);
     yield put({
       type: FOLLOW_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     yield put({
@@ -158,17 +157,16 @@ function* watchFollow() {
 }
 
 // 언팔로우
-// function unfollowAPI() {
-//   return axios.post('/api/unfollow');
-// }
+function unfollowAPI(data) {
+  return axios.delete(`/user/${data.userId}/follow`);
+}
 
 function* unfollow(action) {
   try {
-    // const result = yield call(unfollowAPI);
-    yield delay(1000);
+    const result = yield call(unfollowAPI, action.data);
     yield put({
       type: UNFOLLOW_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     yield put({

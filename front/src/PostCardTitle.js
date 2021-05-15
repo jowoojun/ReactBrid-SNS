@@ -11,21 +11,33 @@ const PostCardTitle = ({ post }) => {
 
   const onClick = useCallback(() => {
     if (isFollowing) {
-      dispatch(unfollowRequestAction(post.User));
+      dispatch(unfollowRequestAction({ userId: post.User.id }));
     } else {
-      dispatch(followRequestAction(post.User));
+      dispatch(followRequestAction({ userId: post.User.id }));
     }
   }, [isFollowing]);
 
+  if (me && me.id !== post.User.id) {
+    return (
+      <>
+        <div style={{
+          display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+        }}
+        >
+          <div>{post.User.nickname}</div>
+          <Button
+            onClick={onClick}
+            loading={followLoading || unfollowLoading}
+          >
+            {isFollowing ? '언팔로우' : '팔로우'}
+          </Button>
+        </div>
+      </>
+    );
+  }
   return (
     <>
-      <div style={{
-        display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-      }}
-      >
-        <div>{post.User.nickname}</div>
-        {me && <Button onClick={onClick} loading={followLoading || unfollowLoading}>{isFollowing ? '언팔로우' : '팔로우'}</Button>}
-      </div>
+      <div>{post.User.nickname}</div>
     </>
   );
 };

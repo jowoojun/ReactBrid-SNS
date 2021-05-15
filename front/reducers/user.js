@@ -199,7 +199,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
   case FOLLOW_SUCCESS: {
     draft.followLoading = false;
     draft.followDone = true;
-    draft.me.Followings.push(action.data);
+    draft.me.Followings.push({ id: action.data.UserId });
     break;
   }
   case FOLLOW_FAILURE: {
@@ -216,8 +216,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
   case UNFOLLOW_SUCCESS: {
     draft.unfollowLoading = false;
     draft.unfollowDone = true;
-    const userIndex = draft.me.Followings.findIndex((v) => v.id === action.data.id);
-    draft.me.Followings.splice(userIndex, 1);
+    draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data.UserId);
     break;
   }
   case UNFOLLOW_FAILURE: {
