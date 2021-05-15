@@ -8,6 +8,7 @@ import {
 } from './styles';
 
 const ImagesZoom = ({ images, onClose }) => {
+  const serverURL = 'http://localhost:3080/';
   const [currentSlide, setCurrentSlide] = useState(0);
 
   return (
@@ -29,7 +30,7 @@ const ImagesZoom = ({ images, onClose }) => {
           >
             {images.map((v) => (
               <ImgWrapper key={v.src}>
-                <img src={v.src} alt={v.src} />
+                <img src={serverURL + v.src} alt={v.src} />
               </ImgWrapper>
             ))}
           </Slick>

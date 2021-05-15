@@ -11,6 +11,7 @@ const ImageContainer = styled.div`
 
 const PostImages = ({ images }) => {
   const [showImagesZoom, setShowImagesZoom] = useState(false);
+  const serverURL = 'http://localhost:3080/';
 
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
@@ -23,7 +24,7 @@ const PostImages = ({ images }) => {
   if (images.length === 1) {
     return (
       <ImageContainer>
-        <img role="presentation" src={images[0].src} alt={images[0].src} onClick={onZoom} />
+        <img role="presentation" src={serverURL + images[0].src} alt={images[0].src} onClick={onZoom} />
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </ImageContainer>
     );
@@ -32,8 +33,8 @@ const PostImages = ({ images }) => {
     return (
       <ImageContainer>
         <div>
-          <img role="presentation" style={{ width: '50%' }} src={images[0].src} alt={images[0].src} onClick={onZoom} />
-          <img role="presentation" style={{ width: '50%' }} src={images[1].src} alt={images[1].src} onClick={onZoom} />
+          <img role="presentation" style={{ width: '50%' }} src={serverURL + images[0].src} alt={images[0].src} onClick={onZoom} />
+          <img role="presentation" style={{ width: '50%' }} src={serverURL + images[1].src} alt={images[1].src} onClick={onZoom} />
         </div>
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </ImageContainer>
@@ -43,7 +44,7 @@ const PostImages = ({ images }) => {
     <ImageContainer>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <div style={{ flex: '1' }}>
-          <img role="presentation" style={{ width: '100%' }} src={images[0].src} alt={images[0].src} onClick={onZoom} />
+          <img role="presentation" style={{ width: '100%' }} src={serverURL + images[0].src} alt={images[0].src} onClick={onZoom} />
         </div>
         <div
           role="presentation"
