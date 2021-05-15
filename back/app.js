@@ -6,6 +6,7 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv')
 const morgan = require('morgan');
+const path = require('path');
 const app = express();
 
 const userRouter = require('./routes/user');
@@ -24,6 +25,7 @@ app.use(cors({
 }))
 
 // front로부터 데이터 받기 설정
+app.use('/', express.static(path.join(__dirname, 'uploads')))
 app.use(express.json()); // front에서 데이터를 json 형식으로 받음
 app.use(express.urlencoded({ extended: true })); // form 태그의 submit 데이터를 전송받음
 

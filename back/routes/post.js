@@ -1,19 +1,49 @@
 const express = require('express')
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 const { Post, Comment, Image, User } = require('../models');
 const { needLogin } = require('./middlewares')
 
-router.get('/', (req, res) => {
-  res.send('Hello, get post!')
+try{
+  fs.accessSync('uploads')
+} catch(err) {
+  console.log('uploads 폴더가 없으므로 생성합니다.')
+  fs.mkdirSync('uploads')
+}
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done){
+      done(null, 'uploads'); // 저장할 폴더의 이름
+    },
+    filename(req, file, done){
+      const ext = path.extname(file.originalname) // 확장자 추출(.png)
+      const basename = path.basename(file.originalname, ext) // 파일 이름(apple)
+      done(null, basename + new Date().getTime() + ext) // 파일 이름 + 시간 + 확장자 -> apple19573829.png
+    }
+  }),
+  limits: { fileSize: 50 * 1024 * 1024 } // 20MB
 })
 
-router.post('/', needLogin, async (req, res, next) => {
+router.post('/', needLogin, upload.none(), async (req, res, next) => {
+  // upload.none() => 실제 파일을 업로드하는 것은 아니지만 formData를 사용해보기 위해 사용해봄
   try{
     const post = await Post.create({
       UserId: req.user.id,
       content: req.body.content,
     });
+    if(req.body.image){
+      if(Array.isArray(req.body.image)) { // 이미지가 여러개인 경우
+        const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image })))
+        await post.addImage(images)
+      } else { // 이미지가 하나인 경우
+        const image = await Image.create({ src: req.body.image })
+        await post.addImage(image)
+      }
+    }
     const fullPost = await Post.findOne({
       where: { id: post.id },
       include: [{
@@ -37,9 +67,12 @@ router.post('/', needLogin, async (req, res, next) => {
   }
 })
 
-router.delete('/', (req, res) => {
-  res.send('Hello, delete post!')
-})
+router.post('/images', needLogin, upload.array('image'), async (req, res, next) => {
+  // image라는 키값을 가진 array의 형태로 업로드 해야함
+  // upload.array('image') => array 형식으로 실제 파일을 업로드하는 것이기 때문에 key값으로 image를 사용함
+  console.log(req.files)
+  res.status(201).json(req.files.map((v) => v.filename));
+});
 
 router.post('/:postId/comment', needLogin, async (req, res, next) => {
   try{
