@@ -150,4 +150,29 @@ router.delete('/:userId/follow', needLogin, async (req, res, next) => {
   }
 })
 
+router.get('/followings', needLogin, async (req, res, next) => {
+  try{
+    const user = await User.findOne({
+      where: { id: req.user.id }
+    })
+    const followings = await user.getFollowings();
+    res.status(200).json({ followings });
+  } catch(err) {
+    console.err(err);
+    next(err);
+  }
+})
+
+router.get('/followers', needLogin, async (req, res, next) => {
+  try{
+    const user = await User.findOne({
+      where: { id: req.user.id }
+    })
+    const followers = await user.getFollowers();
+    res.status(200).json({ followers });
+  } catch(err) {
+    console.err(err);
+    next(err);
+  }
+})
 module.exports = router;
