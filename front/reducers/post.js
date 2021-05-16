@@ -61,10 +61,6 @@ export const RETWEET_REQUEST = 'RETWEET_REQUEST';
 export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
 export const RETWEET_FAILURE = 'RETWEET_FAILURE';
 
-export const loadPostRequestAction = () => ({
-  type: LOAD_POSTS_REQUEST,
-});
-
 export const addPostRequestAction = (data) => ({
   type: ADD_POST_REQUEST,
   data,
@@ -122,7 +118,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
     draft.loadPostLoading = false;
     draft.loadPostDone = true;
     draft.mainPosts = draft.mainPosts.concat(action.data);
-    draft.hasMorePosts = draft.mainPosts.length < 60;
+    draft.hasMorePosts = action.data.length === 10;
     // draft.hasMorePosts = action.data.hasMorePosts
     break;
   }

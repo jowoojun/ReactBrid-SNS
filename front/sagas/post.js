@@ -20,8 +20,8 @@ import {
 } from '../reducers/user';
 
 // 포스트 불러오기
-function loadPostAPI() {
-  return axios.get('/posts');
+function loadPostAPI(data) {
+  return axios.get(`/posts?lastId=${data.lastId || 0}&limit=${data.limit}`);
   // return {
   //   hasMorePosts: false,
   //   data: Array(data).fill().map(() => ({
@@ -45,9 +45,9 @@ function loadPostAPI() {
   // };
 }
 
-function* loadPost() {
+function* loadPost(action) {
   try {
-    const result = yield call(loadPostAPI);
+    const result = yield call(loadPostAPI, action.data);
     // const result = loadPostAPI(10);
     yield put({
       type: LOAD_POSTS_SUCCESS,

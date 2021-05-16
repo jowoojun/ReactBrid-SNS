@@ -5,7 +5,7 @@ import PostForm from '../src/PostForm';
 import PostCard from '../src/PostCard';
 import AppLayout from '../src/AppLayout';
 
-import { loadPostRequestAction } from '../reducers/post';
+import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import { loadUserRequestAction } from '../reducers/user';
 
 const Home = () => {
@@ -23,7 +23,12 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(loadUserRequestAction());
-    dispatch(loadPostRequestAction());
+    dispatch({
+      type: LOAD_POSTS_REQUEST,
+      data: {
+        limit: 10,
+      },
+    });
   }, []);
 
   useEffect(() => {
@@ -31,7 +36,14 @@ const Home = () => {
       const screen = document.documentElement;
       if (window.scrollY + screen.clientHeight > screen.scrollHeight - 1000) {
         if (hasMorePosts && !loadPostLoading) {
-          dispatch(loadPostRequestAction());
+          const lastId = mainPosts[mainPosts.length - 1]?.id;
+          dispatch({
+            type: LOAD_POSTS_REQUEST,
+            data: {
+              lastId,
+              limit: 10,
+            },
+          });
         }
       }
     }
