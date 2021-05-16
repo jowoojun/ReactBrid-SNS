@@ -4,7 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-const { Post, Comment, Image, User } = require('../models');
+const { Post, Comment, Image, User, Hashtag } = require('../models');
 const { needLogin } = require('./middlewares')
 
 try{
@@ -31,10 +31,18 @@ const upload = multer({
 router.post('/', needLogin, upload.none(), async (req, res, next) => {
   // upload.none() => 실제 파일을 업로드하는 것은 아니지만 formData를 사용해보기 위해 사용해봄
   try{
+    // 예시) req.body.content => '해시태그들은 아래와 같습니다. #노드 #익스프레스 #리엑트'
+    const hashtag = req.body.content.match(/(#[^\s]+)/g); // ['#노드', '#익스프레스', '#리엑트'
     const post = await Post.create({
       UserId: req.user.id,
       content: req.body.content,
     });
+    if(hashtag){ 
+      const result = await Promise.all(hashtag.map((tag) => Hashtag.findOrCreate({
+        where: { name: tag.slice(1).toLowerCase()}, // ['노드', '익스프레스', '리엑트']
+      }))) // [['노드', true], ['익스프레스', true], ['리엑트', true]]
+      await post.addHashtags(result.map((v) => v[0]));
+    }
     if(req.body.image){
       if(Array.isArray(req.body.image)) { // 이미지가 여러개인 경우
         const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image })))
