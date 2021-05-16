@@ -113,7 +113,7 @@ router.patch('/nickname', needLogin, async (req, res, next) => {
     })
     res.status(200).json({ nickname: req.body.nickname })
   } catch(err) {
-    console.err(error);
+    console.error(error);
     next(err);
   }
 })
@@ -129,7 +129,7 @@ router.patch('/:userId/follow', needLogin, async (req, res, next) => {
     await user.addFollowers(req.user.id);
     res.status(200).json({ UserId: parseInt(req.params.userId) })
   } catch (err) {
-    console.err(err);
+    console.error(err);
     next(err)
   }
 })
@@ -145,7 +145,7 @@ router.delete('/:userId/follow', needLogin, async (req, res, next) => {
     await user.removeFollowers(req.user.id);
     res.status(201).json({ UserId: parseInt(req.params.userId) })
   } catch (err) {
-    console.err(err);
+    console.error(err);
     next(err)
   }
 })
@@ -171,7 +171,7 @@ router.get('/followings', needLogin, async (req, res, next) => {
     const followings = await user.getFollowings();
     res.status(200).json({ followings });
   } catch(err) {
-    console.err(err);
+    console.error(err);
     next(err);
   }
 })
@@ -184,7 +184,7 @@ router.get('/followers', needLogin, async (req, res, next) => {
     const followers = await user.getFollowers();
     res.status(200).json({ followers });
   } catch(err) {
-    console.err(err);
+    console.error(err);
     next(err);
   }
 })
