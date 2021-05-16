@@ -13,7 +13,9 @@ import CommentForm from './CommentForm';
 import PostCardTitle from './PostCardTitle';
 import PostCardContent from './PostCardContent';
 
-import { removePostRequestAction, likePostRequestAction, unlikePostRequestAction } from '../reducers/post';
+import {
+  removePostRequestAction, likePostRequestAction, unlikePostRequestAction, RETWEET_REQUEST,
+} from '../reducers/post';
 
 const PostCard = ({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -43,12 +45,19 @@ const PostCard = ({ post }) => {
     return dispatch(unlikePostRequestAction({ postId: post.id }));
   }, [id]);
 
+  const onRetweet = useCallback(() => {
+    dispatch({
+      type: RETWEET_REQUEST,
+      data: { postId: post.id },
+    });
+  }, []);
+
   const liked = post.Liker.find((v) => v.id === id);
   return (
     <div style={{ marginBottom: '20px' }} key={post.id}>
       <Card
         actions={[
-          <RetweetOutlined key="retweet" />,
+          <RetweetOutlined key="retweet" onClick={onRetweet} />,
           liked
             ? <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onUnlike} />
             : <HeartOutlined key="heart" onClick={onLike} />,
@@ -71,18 +80,35 @@ const PostCard = ({ post }) => {
             <EllipsisOutlined />
           </Popover>,
         ]}
+        title={post.RetweetId && `${post.User.nickname}님이 리트윗하셨습니다.`}
       >
-        <Card.Meta
-          avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-          title={<PostCardTitle post={post} />}
-          description={(
-            <div>
-              <PostCardContent content={post.content} />
-              {post.Images[0] && <PostImages images={post.Images} />}
-            </div>
+        { post.RetweetId && post.Retweet
+          ? (
+            <Card>
+              <Card.Meta
+                avatar={<Avatar>{post.Retweet.User.nickname[0]}</Avatar>}
+                title={<PostCardTitle post={post.Retweet} />}
+                description={(
+                  <div>
+                    <PostCardContent content={post.Retweet.content} />
+                    {post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}
+                  </div>
+                )}
+              />
+            </Card>
+          )
+          : (
+            <Card.Meta
+              avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+              title={<PostCardTitle post={post} />}
+              description={(
+                <div>
+                  <PostCardContent content={post.content} />
+                  {post.Images[0] && <PostImages images={post.Images} />}
+                </div>
+              )}
+            />
           )}
-        />
-        {}
       </Card>
       {commentFormOpened && (
         <>
@@ -119,6 +145,16 @@ PostCard.propTypes = {
     Comments: PropTypes.arrayOf(PropTypes.any),
     Images: PropTypes.arrayOf(PropTypes.any),
     Liker: PropTypes.arrayOf(PropTypes.any),
+    RetweetId: PropTypes.number || null,
+    Retweet: PropTypes.shape({
+      User: PropTypes.shape({
+        id: PropTypes.number,
+        nickname: PropTypes.string,
+      }),
+      content: PropTypes.string,
+      createdAt: PropTypes.string,
+      Images: PropTypes.arrayOf(PropTypes.any),
+    }),
   }).isRequired,
 };
 
