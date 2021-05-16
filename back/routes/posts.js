@@ -11,6 +11,15 @@ router.get('/', async (req, res, next) => {
         ['createdAt', 'DESC']
       ],
       include: [{
+        model: Post,
+        as: 'Retweet',
+        include: [{
+          model: User, // 리트윗 타겟 게시글 작성자
+          attributes: ['id', 'nickname']
+        }, {
+          model: Image, // 리트윗 타겟 이미지
+        }]
+      }, {
         model: Image,
       }, {
         model: Comment,

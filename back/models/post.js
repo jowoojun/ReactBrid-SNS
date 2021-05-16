@@ -21,8 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     // post.addImages, post.getImages, post.removeImages 가 자동 생성됨
     db.Post.belongsToMany(db.Hashtag, { through: "HashtagList" })
     // post.addHashtags, post.getHashtags, post.removeHashtags 가 자동 생성됨
-    db.Post.hasMany(db.Post, { as: 'Retweet' });
-    // post.addRetweets, post.getRetweets, post.removeRetweets 가 자동 생성됨   
+    db.Post.belongsTo(db.Post, { as: 'Retweet' });
+    // post.addRetweet, post.getRetweet, post.removeRetweet 가 자동 생성됨   
   };
   return Post;
 }
