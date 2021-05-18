@@ -3,7 +3,7 @@ import {
 } from 'redux-saga/effects';
 import axios from 'axios';
 import {
-  LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE,
+  LOAD_MY_INFO_REQUEST, LOAD_MY_INFO_SUCCESS, LOAD_MY_INFO_FAILURE,
   LOAD_FOLLOWINGS_REQUEST, LOAD_FOLLOWINGS_SUCCESS, LOAD_FOLLOWINGS_FAILURE,
   LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWERS_SUCCESS, LOAD_FOLLOWERS_FAILURE,
   LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE,
@@ -16,27 +16,27 @@ import {
 } from '../reducers/user';
 
 // 사용자 정보 갱신
-function loadUserAPI() {
+function loadMyInfoAPI() {
   return axios.get('/user/');
 }
 
-function* loadUser() {
+function* loadMyInfo() {
   try {
-    const result = yield call(loadUserAPI);
+    const result = yield call(loadMyInfoAPI);
     yield put({
-      type: LOAD_USER_SUCCESS,
+      type: LOAD_MY_INFO_SUCCESS,
       data: result.data,
     });
   } catch (err) {
     yield put({
-      type: LOAD_USER_FAILURE,
+      type: LOAD_MY_INFO_FAILURE,
       error: err.response.data,
     });
   }
 }
 
-function* watchLoadUser() {
-  yield takeLatest(LOAD_USER_REQUEST, loadUser);
+function* watchLoadMyInfo() {
+  yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
 }
 
 // 팔로워 정보 갱신
@@ -260,7 +260,7 @@ export default function* userSaga() {
     fork(watchLoadFollowers),
     fork(watchLoadFollowings),
     fork(watchChangeNickname),
-    fork(watchLoadUser),
+    fork(watchLoadMyInfo),
     fork(watchLogIn),
     fork(watchLogOut),
     fork(watchSignUp),

@@ -1,9 +1,9 @@
 import produce from 'immer';
 
 export const initialState = {
-  loadUserLoading: false, // 사용자 정보 갱신 시도중
-  loadUserDone: false,
-  loadUserError: null,
+  loadMyInfoLoading: false, // 사용자 정보 갱신 시도중
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
   loadFollowersLoading: false, // 팔로잉 정보 갱신 시도중
   loadFollowersDone: false,
   loadFollowersError: null,
@@ -37,9 +37,9 @@ export const initialState = {
 };
 
 // 사용자 정보 갱신
-export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
-export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
-export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
 
 // 로그인
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
@@ -82,7 +82,7 @@ export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
 export const loadUserRequestAction = () => ({
-  type: LOAD_USER_REQUEST,
+  type: LOAD_MY_INFO_REQUEST,
 });
 
 export const signUpRequestAction = (data) => ({
@@ -174,21 +174,21 @@ export default (state = initialState, action) => produce(state, (draft) => {
     draft.loadFollowingsError = action.error;
     break;
   }
-  case LOAD_USER_REQUEST: {
-    draft.loadUserLoading = true;
-    draft.loadUserError = null;
-    draft.loadUserDone = false;
+  case LOAD_MY_INFO_REQUEST: {
+    draft.loadMyInfoLoading = true;
+    draft.loadMyInfoError = null;
+    draft.loadMyInfoDone = false;
     break;
   }
-  case LOAD_USER_SUCCESS: {
-    draft.loadUserLoading = false;
+  case LOAD_MY_INFO_SUCCESS: {
+    draft.loadMyInfoLoading = false;
     draft.me = action.data;
-    draft.loadUserDone = true;
+    draft.loadMyInfoDone = true;
     break;
   }
-  case LOAD_USER_FAILURE: {
-    draft.loadUserLoading = false;
-    draft.loadUserError = action.error;
+  case LOAD_MY_INFO_FAILURE: {
+    draft.loadMyInfoLoading = false;
+    draft.loadMyInfoError = action.error;
     break;
   }
   case LOG_IN_REQUEST: {
