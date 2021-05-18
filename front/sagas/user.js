@@ -4,6 +4,7 @@ import {
 import axios from 'axios';
 import {
   LOAD_MY_INFO_REQUEST, LOAD_MY_INFO_SUCCESS, LOAD_MY_INFO_FAILURE,
+  LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE,
   LOAD_FOLLOWINGS_REQUEST, LOAD_FOLLOWINGS_SUCCESS, LOAD_FOLLOWINGS_FAILURE,
   LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWERS_SUCCESS, LOAD_FOLLOWERS_FAILURE,
   LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE,
@@ -37,6 +38,30 @@ function* loadMyInfo() {
 
 function* watchLoadMyInfo() {
   yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
+}
+
+// 사용자 정보 갱신
+function loadUserInfoAPI(data) {
+  return axios.get(`/user/${data}`);
+}
+
+function* loadUserInfo(action) {
+  try {
+    const result = yield call(loadUserInfoAPI, action.data);
+    yield put({
+      type: LOAD_USER_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_USER_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function* watchLoadUserInfo() {
+  yield takeLatest(LOAD_USER_REQUEST, loadUserInfo);
 }
 
 // 팔로워 정보 갱신
@@ -261,6 +286,7 @@ export default function* userSaga() {
     fork(watchLoadFollowings),
     fork(watchChangeNickname),
     fork(watchLoadMyInfo),
+    fork(watchLoadUserInfo),
     fork(watchLogIn),
     fork(watchLogOut),
     fork(watchSignUp),

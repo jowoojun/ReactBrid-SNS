@@ -1,5 +1,7 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'antd';
 import { followRequestAction, unfollowRequestAction } from '../reducers/user';
@@ -24,7 +26,7 @@ const PostCardTitle = ({ post }) => {
           display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
         }}
         >
-          <div>{post.User.nickname}</div>
+          <Link href={`/user/${post.User.id}`}><div>{post.User.nickname}</div></Link>
           <Button
             onClick={onClick}
             loading={followLoading || unfollowLoading}
@@ -37,7 +39,7 @@ const PostCardTitle = ({ post }) => {
   }
   return (
     <>
-      <div>{post.User.nickname}</div>
+      <Link href={`/user/${post.User.id}`}><div>{post.User.nickname}</div></Link>
     </>
   );
 };

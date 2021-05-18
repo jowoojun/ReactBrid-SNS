@@ -4,6 +4,9 @@ export const initialState = {
   loadMyInfoLoading: false, // 사용자 정보 갱신 시도중
   loadMyInfoDone: false,
   loadMyInfoError: null,
+  loadUserInfoLoading: false, // 타 사용자 정보 조회 시도중
+  loadUserInfoDone: false,
+  loadUserInfoError: null,
   loadFollowersLoading: false, // 팔로잉 정보 갱신 시도중
   loadFollowersDone: false,
   loadFollowersError: null,
@@ -32,15 +35,17 @@ export const initialState = {
   removeFollowerDone: false,
   removeFollowerError: null,
   me: null,
-  signUpData: {},
-  loginData: {},
+  userInfo: {},
 };
 
 // 사용자 정보 갱신
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
 export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
 export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
-
+// 타 사용자 정보 불러오기
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 // 로그인
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
@@ -189,6 +194,23 @@ export default (state = initialState, action) => produce(state, (draft) => {
   case LOAD_MY_INFO_FAILURE: {
     draft.loadMyInfoLoading = false;
     draft.loadMyInfoError = action.error;
+    break;
+  }
+  case LOAD_USER_REQUEST: {
+    draft.loadUserInfoLoading = true;
+    draft.loadUserInfoError = null;
+    draft.loadUserInfoDone = false;
+    break;
+  }
+  case LOAD_USER_SUCCESS: {
+    draft.loadUserInfoLoading = false;
+    draft.userInfo = action.data;
+    draft.loadUserInfoDone = true;
+    break;
+  }
+  case LOAD_USER_FAILURE: {
+    draft.loadUserInfoLoading = false;
+    draft.loadUserInfoError = action.error;
     break;
   }
   case LOG_IN_REQUEST: {
