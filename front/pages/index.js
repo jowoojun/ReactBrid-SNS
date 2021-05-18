@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import { END } from 'redux-saga';
 
 import PostForm from '../src/PostForm';
@@ -56,6 +57,11 @@ const Home = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
   context.store.dispatch({
     type: LOAD_USER_REQUEST,
   });
