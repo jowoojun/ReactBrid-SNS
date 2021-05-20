@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { Input, Form, Button } from 'antd';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
 import useInput from '../hooks/useInput';

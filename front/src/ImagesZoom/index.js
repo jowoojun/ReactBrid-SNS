@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Slick from 'react-slick';
 import PropTypes from 'prop-types';
-import { Global } from '@emotion/react';
 
 import {
-  Overlay, Header, CloseBtn, SlickWrapper, ImgWrapper, Indicator, GlobalStyle,
+  Overlay, Header, CloseBtn, SlickWrapper, ImgWrapper, Indicator, Global,
 } from './styles';
 
 const ImagesZoom = ({ images, onClose }) => {
@@ -13,7 +12,7 @@ const ImagesZoom = ({ images, onClose }) => {
 
   return (
     <Overlay>
-      <Global styles={GlobalStyle} />
+      <Global />
       <Header>
         <h1>상세 이미지</h1>
         <CloseBtn onClick={onClose} />

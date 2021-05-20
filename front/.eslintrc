@@ -19,11 +19,9 @@
   ],
   "plugins": [
     "import",
-    "@emotion",
     "react-hooks"
   ],
   "rules": {
-    "@emotion/jsx-import": "error",
     "no-param-reassign": "off",
     "jsx-a11y/label-has-associated-control": [ "error", {
       "required": {

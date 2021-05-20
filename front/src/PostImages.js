@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
+
 import { PlusOutlined } from '@ant-design/icons';
 
 import ImagesZoom from './ImagesZoom';

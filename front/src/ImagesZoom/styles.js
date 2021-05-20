@@ -1,5 +1,4 @@
-import styled from '@emotion/styled';
-import { css } from '@emotion/react';
+import styled, { createGlobalStyle } from 'styled-components';
 import { CloseOutlined } from '@ant-design/icons';
 
 export const Overlay = styled.div`
@@ -11,7 +10,7 @@ export const Overlay = styled.div`
   bottom: 0;
 `;
 
-export const GlobalStyle = css`
+export const Global = createGlobalStyle`
   .slick-slide {
     display: inline-block;
   }
