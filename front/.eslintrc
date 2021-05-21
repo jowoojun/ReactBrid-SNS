@@ -6,7 +6,6 @@
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true,
-      "js": true,
     }
   },
   "env": {
@@ -19,10 +18,13 @@
   ],
   "plugins": [
     "import",
-    "react-hooks"
+    "react-hooks",
+    "jsx-a11y"
   ],
   "rules": {
     "no-param-reassign": "off",
+    "react/jsx-props-no-spreading": "off",
+    "consistent-return": "off",
     "jsx-a11y/label-has-associated-control": [ "error", {
       "required": {
         "some": [ "nesting", "id"  ]
