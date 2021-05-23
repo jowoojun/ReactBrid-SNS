@@ -12,6 +12,7 @@ const app = express();
 const userRouter = require('./routes/user');
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
+const hashtagRouter = require('./routes/hashtag');
 const passportConfig = require('./passport');
 
 // 환경변수 설정
@@ -44,6 +45,7 @@ passportConfig();
 app.use('/api/user', userRouter);
 app.use('/api/post', postRouter);
 app.use('/api/posts', postsRouter);
+app.use('/api/hashtag', hashtagRouter);
 
 // db연결
 db.sequelize.sync().then(() => {
