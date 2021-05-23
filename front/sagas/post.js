@@ -8,6 +8,7 @@ import axios from 'axios';
 import {
   LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE,
   LOAD_USER_POST_REQUEST, LOAD_USER_POST_SUCCESS, LOAD_USER_POST_FAILURE,
+  LOAD_HASHTAG_POST_REQUEST, LOAD_HASHTAG_POST_SUCCESS, LOAD_HASHTAG_POST_FAILURE,
   ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
   UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS, UPLOAD_IMAGES_FAILURE,
   REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE,
@@ -89,6 +90,31 @@ function* loadUserPost(action) {
 
 function* watchLoadUserPost() {
   yield takeLatest(LOAD_USER_POST_REQUEST, loadUserPost);
+}
+
+// 특정 해시태그의 포스트 불러오기
+function loadHashtagPostAPI(data) {
+  return axios.get(`/hashtag/${encodeURIComponent(data.tag)}?lastId=${data.lastId || 0}&limit=${data.limit}`);
+}
+
+function* loadHashtagPost(action) {
+  try {
+    const result = yield call(loadHashtagPostAPI, action.data);
+    // const result = loadHashtagPostAPI(10);
+    yield put({
+      type: LOAD_HASHTAG_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_HASHTAG_POST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function* watchLoadHashtagPost() {
+  yield takeLatest(LOAD_HASHTAG_POST_REQUEST, loadHashtagPost);
 }
 
 // 포스트 생성하기
@@ -271,6 +297,7 @@ export default function* postSaga() {
   yield all([
     fork(watchLoadPost),
     fork(watchLoadUserPost),
+    fork(watchLoadHashtagPost),
     fork(watchAddPost),
     fork(watchUploadImages),
     fork(watchRemovePost),
