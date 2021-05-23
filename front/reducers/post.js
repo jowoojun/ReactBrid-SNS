@@ -31,6 +31,11 @@ export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
 export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
 
+// 타 사용자의 게시글 불러오기
+export const LOAD_USER_POST_REQUEST = 'LOAD_USER_POST_REQUEST';
+export const LOAD_USER_POST_SUCCESS = 'LOAD_USER_POST_SUCCESS';
+export const LOAD_USER_POST_FAILURE = 'LOAD_USER_POST_FAILURE';
+
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
@@ -108,12 +113,14 @@ export const unlikePostRequestAction = (data) => ({
 
 export default (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
+  case LOAD_USER_POST_REQUEST:
   case LOAD_POSTS_REQUEST: {
     draft.loadPostLoading = true;
     draft.loadPostDone = false;
     draft.loadPostError = null;
     break;
   }
+  case LOAD_USER_POST_SUCCESS:
   case LOAD_POSTS_SUCCESS: {
     draft.loadPostLoading = false;
     draft.loadPostDone = true;
@@ -122,6 +129,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
     // draft.hasMorePosts = action.data.hasMorePosts
     break;
   }
+  case LOAD_USER_POST_FAILURE:
   case LOAD_POSTS_FAILURE: {
     draft.loadPostLoading = false;
     draft.loadPostError = action.error;

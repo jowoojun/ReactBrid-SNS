@@ -7,6 +7,7 @@ import axios from 'axios';
 
 import {
   LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE,
+  LOAD_USER_POST_REQUEST, LOAD_USER_POST_SUCCESS, LOAD_USER_POST_FAILURE,
   ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
   UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS, UPLOAD_IMAGES_FAILURE,
   REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE,
@@ -63,6 +64,31 @@ function* loadPost(action) {
 
 function* watchLoadPost() {
   yield takeLatest(LOAD_POSTS_REQUEST, loadPost);
+}
+
+// 특정 사용자의 포스트 불러오기
+function loadUserPostAPI(data) {
+  return axios.get(`/user/${data.id}/posts?lastId=${data.lastId || 0}&limit=${data.limit}`);
+}
+
+function* loadUserPost(action) {
+  try {
+    const result = yield call(loadUserPostAPI, action.data);
+    // const result = loadUserPostAPI(10);
+    yield put({
+      type: LOAD_USER_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_USER_POST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function* watchLoadUserPost() {
+  yield takeLatest(LOAD_USER_POST_REQUEST, loadUserPost);
 }
 
 // 포스트 생성하기
@@ -244,6 +270,7 @@ function* watchRetweet() {
 export default function* postSaga() {
   yield all([
     fork(watchLoadPost),
+    fork(watchLoadUserPost),
     fork(watchAddPost),
     fork(watchUploadImages),
     fork(watchRemovePost),
