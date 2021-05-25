@@ -1,10 +1,13 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import moment from 'moment';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'antd';
 import { followRequestAction, unfollowRequestAction } from '../reducers/user';
+
+moment.locale('ko');
 
 const PostCardTitle = ({ post }) => {
   const dispatch = useDispatch();
@@ -26,7 +29,10 @@ const PostCardTitle = ({ post }) => {
           display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
         }}
         >
-          <Link href={`/user/${post.User.id}`}><div>{post.User.nickname}</div></Link>
+          <div>
+            <Link href={`/user/${post.User.id}`}><div>{post.User.nickname}</div></Link>
+            <p style={{ color: 'lightgray', padding: 0, margin: 0 }}>{moment(post.createdAt).fromNow()}</p>
+          </div>
           <Button
             onClick={onClick}
             loading={followLoading || unfollowLoading}
@@ -40,6 +46,7 @@ const PostCardTitle = ({ post }) => {
   return (
     <>
       <Link href={`/user/${post.User.id}`}><div>{post.User.nickname}</div></Link>
+      <p style={{ color: 'lightgray', padding: 0, margin: 0 }}>{moment(post.createdAt).fromNow()}</p>
     </>
   );
 };

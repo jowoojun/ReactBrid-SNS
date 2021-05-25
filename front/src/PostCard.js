@@ -8,6 +8,7 @@ import {
 import {
   Card, Button, Avatar, Popover, List, Comment,
 } from 'antd';
+import moment from 'moment';
 
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
@@ -17,6 +18,8 @@ import PostCardContent from './PostCardContent';
 import {
   removePostRequestAction, likePostRequestAction, unlikePostRequestAction, RETWEET_REQUEST,
 } from '../reducers/post';
+
+moment.locale('ko');
 
 const PostCard = ({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -81,7 +84,7 @@ const PostCard = ({ post }) => {
             <EllipsisOutlined />
           </Popover>,
         ]}
-        title={post.RetweetId && `${post.User.nickname}님이 리트윗하셨습니다.`}
+        title={post.RetweetId && `${post.User.nickname}님이 리트윗하셨습니다. `}
       >
         { post.RetweetId && post.Retweet
           ? (
