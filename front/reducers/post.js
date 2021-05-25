@@ -1,4 +1,4 @@
-import produce from 'immer';
+import produce from '../utils/produce';
 
 export const initialState = {
   mainPosts: [],
