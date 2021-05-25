@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
+import Link from 'next/link';
 import {
   RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, EllipsisOutlined,
 } from '@ant-design/icons';
@@ -86,7 +87,11 @@ const PostCard = ({ post }) => {
           ? (
             <Card>
               <Card.Meta
-                avatar={<Avatar>{post.Retweet.User.nickname[0]}</Avatar>}
+                avatar={(
+                  <Link href={`/user/${post.Retweet.User.id}`}>
+                    <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
+                  </Link>
+                )}
                 title={<PostCardTitle post={post.Retweet} />}
                 description={(
                   <div>
@@ -99,7 +104,11 @@ const PostCard = ({ post }) => {
           )
           : (
             <Card.Meta
-              avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+              avatar={(
+                <Link href={`/user/${post.User.id}`}>
+                  <Avatar>{post.User.nickname[0]}</Avatar>
+                </Link>
+              )}
               title={<PostCardTitle post={post} />}
               description={(
                 <div>
@@ -120,8 +129,16 @@ const PostCard = ({ post }) => {
             renderItem={(item) => (
               <li>
                 <Comment
-                  author={item.User.nickname}
-                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  author={(
+                    <Link href={`/user/${post.User.id}`}>
+                      {item.User.nickname}
+                    </Link>
+                  )}
+                  avatar={(
+                    <Link href={`/user/${post.User.id}`}>
+                      <Avatar>{item.User.nickname[0]}</Avatar>
+                    </Link>
+                  )}
                   content={item.content}
                 />
               </li>
