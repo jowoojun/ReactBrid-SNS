@@ -38,87 +38,6 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:userId/posts', async (req, res, next) => {
-  try{
-    console.log(req.params.userId)
-    const where = { UserId: parseInt(req.params.userId) };
-    if (parseInt(req.query.lastId, 10)) { // 초기 로딩이 아닐 때
-      where.id = { [Op.lt]: parseInt(req.query.lastId, 10)}
-    } // 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1
-    const posts = await Post.findAll({
-      where,
-      limit: parseInt(req.query.limit),
-      order: [
-        ['createdAt', 'DESC']
-      ],
-      include: [{
-        model: Post,
-        as: 'Retweet',
-        include: [{
-          model: User, // 리트윗 타겟 게시글 작성자
-          attributes: ['id', 'nickname']
-        }, {
-          model: Image, // 리트윗 타겟 이미지
-        }]
-      }, {
-        model: Image,
-      }, {
-        model: Comment,
-        include: [{
-          model: User, // 댓글 작성자
-          attributes: ['id', 'nickname'],
-        }]
-      }, {
-        model: User, // 게시글 작성자
-        attributes: ['id', 'nickname']
-      }, {
-        model: User, // 좋아요 누른 사람
-        as: 'Liker',
-        attributes: ['id']
-      }]
-    })
-    res.status(200).send(posts);
-  } catch(err) {
-    console.error(err);
-    next(err);
-  }
-});
-
-router.get('/:id', async (req, res, next) => {
-  try{
-    const fullUserWithoutPassword = await User.findOne({
-      where: { id: req.params.id },
-      attributes: {
-        exclude: ['password']
-      },
-      include: [{
-        model: Post,
-        attributes: ['id'],
-      }, {
-        model: User,
-        as: 'Followings',
-        attributes: ['id'],
-      }, {
-        model: User,
-        as: 'Followers',
-        attributes: ['id'],
-      }]
-    })
-    if (fullUserWithoutPassword) {
-      const data = fullUserWithoutPassword.toJSON();
-      data.Posts = data.Posts.length;
-      data.Followings = data.Followings.length;
-      data.Followers = data.Followers.length;
-      res.status(200).json(data);
-    } else {
-      res.status(404).json('존재하지 않는 사용자입니다.');
-    }
-  } catch(err) {
-    console.error(err);
-    next(err);
-  }
-})
-
 router.post('/login', needNotLogin, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if(err){
@@ -200,6 +119,113 @@ router.patch('/nickname', needLogin, async (req, res, next) => {
   }
 })
 
+router.get('/followings', needLogin, async (req, res, next) => {
+  try{
+    const user = await User.findOne({
+      where: { id: req.user.id }
+    })
+    const followings = await user.getFollowings();
+    res.status(200).json({ followings });
+  } catch(err) {
+    console.error(err);
+    next(err);
+  }
+})
+
+router.get('/followers', needLogin, async (req, res, next) => {
+  try{
+    const user = await User.findOne({
+      where: { id: req.user.id }
+    })
+    const followers = await user.getFollowers();
+    res.status(200).json({ followers });
+  } catch(err) {
+    console.error(err);
+    next(err);
+  }
+})
+
+router.get('/:userId/posts', async (req, res, next) => {
+  try{
+    console.log(req.params.userId)
+    const where = { UserId: parseInt(req.params.userId) };
+    if (parseInt(req.query.lastId, 10)) { // 초기 로딩이 아닐 때
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10)}
+    } // 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1
+    const posts = await Post.findAll({
+      where,
+      limit: parseInt(req.query.limit),
+      order: [
+        ['createdAt', 'DESC']
+      ],
+      include: [{
+        model: Post,
+        as: 'Retweet',
+        include: [{
+          model: User, // 리트윗 타겟 게시글 작성자
+          attributes: ['id', 'nickname']
+        }, {
+          model: Image, // 리트윗 타겟 이미지
+        }]
+      }, {
+        model: Image,
+      }, {
+        model: Comment,
+        include: [{
+          model: User, // 댓글 작성자
+          attributes: ['id', 'nickname'],
+        }]
+      }, {
+        model: User, // 게시글 작성자
+        attributes: ['id', 'nickname']
+      }, {
+        model: User, // 좋아요 누른 사람
+        as: 'Liker',
+        attributes: ['id']
+      }]
+    })
+    res.status(200).send(posts);
+  } catch(err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+router.get('/:id', async (req, res, next) => {
+  try{
+    const fullUserWithoutPassword = await User.findOne({
+      where: { id: req.params.id },
+      attributes: {
+        exclude: ['password']
+      },
+      include: [{
+        model: Post,
+        attributes: ['id'],
+      }, {
+        model: User,
+        as: 'Followings',
+        attributes: ['id'],
+      }, {
+        model: User,
+        as: 'Followers',
+        attributes: ['id'],
+      }]
+    })
+    if (fullUserWithoutPassword) {
+      const data = fullUserWithoutPassword.toJSON();
+      data.Posts = data.Posts.length;
+      data.Followings = data.Followings.length;
+      data.Followers = data.Followers.length;
+      res.status(200).json(data);
+    } else {
+      res.status(404).json('존재하지 않는 사용자입니다.');
+    }
+  } catch(err) {
+    console.error(err);
+    next(err);
+  }
+})
+
 router.patch('/:userId/follow', needLogin, async (req, res, next) => {
   try{
     const user = await User.findOne({
@@ -239,32 +265,6 @@ router.delete('/:userId/follower', needLogin, async (req, res, next) => {
     })
     await user.removeFollowings(req.user.id);
     res.status(200).json({ UserId: parseInt(req.params.userId) });
-  } catch(err) {
-    console.error(err);
-    next(err);
-  }
-})
-
-router.get('/followings', needLogin, async (req, res, next) => {
-  try{
-    const user = await User.findOne({
-      where: { id: req.user.id }
-    })
-    const followings = await user.getFollowings();
-    res.status(200).json({ followings });
-  } catch(err) {
-    console.error(err);
-    next(err);
-  }
-})
-
-router.get('/followers', needLogin, async (req, res, next) => {
-  try{
-    const user = await User.findOne({
-      where: { id: req.user.id }
-    })
-    const followers = await user.getFollowers();
-    res.status(200).json({ followers });
   } catch(err) {
     console.error(err);
     next(err);
