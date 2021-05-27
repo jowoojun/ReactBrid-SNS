@@ -6,6 +6,8 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv')
 const morgan = require('morgan');
+const hpp = require('hpp');
+const helmet = require('helmet');
 const path = require('path');
 const app = express();
 
@@ -14,14 +16,21 @@ const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
 const hashtagRouter = require('./routes/hashtag');
 const passportConfig = require('./passport');
+const prod = process.env.NODE_ENV === 'production'? true : false;
 
 // 환경변수 설정
 dotenv.config()
 
-app.use(morgan('dev'))
+if (prod) {
+  app.use(morgan('combined'));
+  app.use(hpp());
+  app.use(helmet())
+} else {
+  app.use(morgan('dev'))
+}
 // Access-Control-Allow-Origin 에러
 app.use(cors({ 
-  origin: 'http://localhost:3000', // front 서버 주소
+  origin: ['http://localhost:3000', 'Rwiiter.com'], // front 서버 주소
   credentials: true, // 쿠키도 같이 전달하고 싶으면 true로 해야함. 쿠키 사용시 true 안하면 401에러가 뜸.
 }))
 
@@ -64,6 +73,6 @@ app.get('/', (req, res) => {
 
 const deploy_port = parseInt(process.env.DEPLOYMENT_PORT, 10)
 // 서버 실행
-app.listen(process.env.NODE_ENV === 'development' ? 3065 : deploy_port, () => {
-  console.log('running...!')
+app.listen(prod ? 3065 : deploy_port, () => {
+  console.log(process.env.DEPLOYMENT_PORT + ' port running...!')
 });
