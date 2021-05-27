@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { PlusOutlined } from '@ant-design/icons';
 
 import ImagesZoom from './ImagesZoom';
+import { backendURL } from '../config/config';
 
 const ImageContainer = styled.div`
   margin-top: 10px;
@@ -12,7 +13,7 @@ const ImageContainer = styled.div`
 
 const PostImages = ({ images }) => {
   const [showImagesZoom, setShowImagesZoom] = useState(false);
-  const serverURL = 'http://localhost:3080/';
+  const serverURL = `${backendURL}/`;
 
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);

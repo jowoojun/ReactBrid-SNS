@@ -6,8 +6,10 @@ import {
   Overlay, Header, CloseBtn, SlickWrapper, ImgWrapper, Indicator, Global,
 } from './styles';
 
+import { backendURL } from '../../config/config';
+
 const ImagesZoom = ({ images, onClose }) => {
-  const serverURL = 'http://localhost:3080/';
+  const serverURL = `${backendURL}/`;
   const [currentSlide, setCurrentSlide] = useState(0);
 
   return (
