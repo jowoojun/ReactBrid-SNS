@@ -62,7 +62,8 @@ app.get('/', (req, res) => {
   
 // })
 
+const deploy_port = parseInt(process.env.DEPLOYMENT_PORT, 10)
 // 서버 실행
-app.listen(3080, () => {
+app.listen(process.env.NODE_ENV === 'development' ? 3065 : deploy_port, () => {
   console.log('running...!')
 });
