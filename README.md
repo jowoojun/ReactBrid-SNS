@@ -10,14 +10,13 @@ React.js와 next.js와 같은 Front-end 공부를 위한 토이프로젝트
 - Redux
 - Redux-saga
 - Ant-Design
-- emotion
+- styled-components
 
 ## back-end 스펙
 
 - Node
 - Express
 - Sequelize(MySQL)
-- AWS 배포(EC2 + Lambda + S3 + Route53)
 
 ## 참조
 ### 개발 개념 정리
